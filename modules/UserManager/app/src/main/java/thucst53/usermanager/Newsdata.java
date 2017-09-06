@@ -1,7 +1,11 @@
 package thucst53.usermanager;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import com.orm.SugarRecord;
+
+import org.json.JSONObject;
 
 /**
  * Created by ThinkPad on 2017/9/5.
@@ -9,34 +13,30 @@ import com.orm.SugarRecord;
 
 public class Newsdata extends SugarRecord<Newsdata> {
     User owner;
-    String newsclasstag;
-    String newsid;
-    String newssource;
-    String newstitle;
-    String newstime;
-    String newsurl;
-    String newsauthor;
-    String langtype;
-    String newspictures;
-    String newsvideos;
-    String newsintro;
+    String jsonstr;
 
-    String newscategory;
-    String inbornkeywords;
-    String newscontent;
-    String crawlsource;
-    String newsjournal;
-    String crawltime;
-    String repeatid;
-    ArrayList<String> seggedtitle;
-    ArrayList<String> seggedcontent;
-    ArrayList<String> persons;
-    ArrayList<Integer> personscnt;
-    ArrayList<String> locations;
-    ArrayList<Integer> locationscnt;
-    ArrayList<String> organizations;
-    ArrayList<String> keywords;
-    ArrayList<Double> keywordsscore;
-    ArrayList<String> bagofwords;
-    ArrayList<Double> bagofwordsscore;
+    public Newsdata() {}
+
+    public Newsdata(User owner, String jsonstr) {
+        this.owner = owner;
+        this.jsonstr = jsonstr;
+    }
+
+    public  static  Newsdata    userSave(User owner, String detail) {
+        try {
+            JSONObject obj = new JSONObject(detail);
+            Newsdata data = new Newsdata(owner, detail);
+            data.save();
+            return data;
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static   ArrayList<Newsdata> getSavedDetail(User owner) {
+        List<Newsdata> lis = Newsdata.find(Newsdata.class, "owner = ?", owner.getId().toString());
+        ArrayList<Newsdata> alis = new ArrayList<Newsdata>(lis);
+        return alis;
+    }
 }

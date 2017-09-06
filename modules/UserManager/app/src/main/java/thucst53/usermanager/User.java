@@ -39,7 +39,7 @@ public class User extends SugarRecord<User> {
     }
     public  static  User    register(String username, String raw_passwd) throws UserRegisterException
     {
-        List<User> lu = User.findWithQuery(User.class, "Select * from User where name = ?", username);
+        List<User> lu = User.find(User.class, "name = ?", username);
         if (!lu.isEmpty()) throw new UserRegisterException();
 
         if (!passwdChk(raw_passwd)) throw new UserRegisterException(0);
@@ -51,7 +51,7 @@ public class User extends SugarRecord<User> {
 
     public  static  User    login(String username, String raw_passwd) throws UserLoginException
     {
-        List<User> lu = User.findWithQuery(User.class, "Select * from User where name = ?", username);
+        List<User> lu = User.find(User.class, "name = ?", username);
         if (lu.isEmpty()) throw new UserLoginException();
         User    u = lu.get(0);
         if (u.salted_passwd.compareTo(salted(raw_passwd)) == 0) return u;
