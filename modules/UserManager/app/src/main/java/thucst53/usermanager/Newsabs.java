@@ -13,6 +13,7 @@ import java.util.List;
 public class Newsabs extends SugarRecord<Newsabs> {
     User owner;
     String jsonstr;
+    String category;
 
     public Newsabs() {
     }
@@ -20,6 +21,14 @@ public class Newsabs extends SugarRecord<Newsabs> {
     public Newsabs(User owner, String jsonstr) {
         this.owner = owner;
         this.jsonstr = jsonstr;
+
+        try {
+            JSONObject obj = new JSONObject(jsonstr);
+            this.category = obj.getString("newsClassTag");
+        }
+        catch (Exception e) {
+            this.category = "";
+        }
     }
 
     public static ArrayList<Newsabs> userGrab(User owner, String grabRes) {
@@ -44,6 +53,12 @@ public class Newsabs extends SugarRecord<Newsabs> {
 
     public static   ArrayList<Newsabs> getCachedAbstract(User owner) {
         List<Newsabs> lis = Newsabs.find(Newsabs.class, "owner = ?", owner.getId().toString());
+        ArrayList<Newsabs> alis = new ArrayList<Newsabs>(lis);
+        return alis;
+    }
+
+    public static   ArrayList<Newsabs> getCachedAbstractByCategory(User owner, String category) {
+        List<Newsabs> lis = Newsabs.find(Newsabs.class, "owner = ? AND category = ?", owner.getId().toString(), category);
         ArrayList<Newsabs> alis = new ArrayList<Newsabs>(lis);
         return alis;
     }
