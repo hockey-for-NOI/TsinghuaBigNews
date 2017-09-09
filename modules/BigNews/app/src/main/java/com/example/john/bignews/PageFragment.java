@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -25,7 +27,8 @@ public class PageFragment extends Fragment {
     public static final String ARGS_PAGE = "args_page";
     private int mPage;
     private ArrayList<String> listItems;
-    private ListView listV;
+    private FragmentManager fm;
+    private FragmentTransaction ft;
 
     public static PageFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -119,7 +122,12 @@ public class PageFragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
         {
-            // TODO Auto-generated method stub
+            Intent intent=new Intent(getActivity(), Reader.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("sb", listItems.get(arg2).toString());
+            intent.putExtras(bundle);
+
+            startActivity(intent);
         }
     }
 
