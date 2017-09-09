@@ -1,5 +1,7 @@
 package com.example.john.bignews;
 
+import com.example.hq.usermanager.*;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -50,6 +52,36 @@ public class PageFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.listView);
 
         listItems = new ArrayList<String>();
+
+	User u = User.register("sb1", "passwd1");
+
+	try
+	{
+		u = User.register("sb1", "passwd2");
+	}
+	catch (UserRegisterException e)
+	{
+		listItems.add(e.message());
+	}
+
+	try
+	{
+		u = User.register("sb2", "sh");
+	}
+	catch (UserRegisterException e)
+	{
+		listItems.add(e.message());
+	}
+	
+	try
+	{
+		u = User.login("sb", "passwd1");
+	}
+	catch (UserLoginException e)
+	{
+		listItems.add(e.message());
+	}
+
         listItems.add("Caonima");
         listItems.add("Shabi");
         listItems.add("NImabi");
