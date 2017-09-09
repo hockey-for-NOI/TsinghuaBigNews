@@ -53,34 +53,41 @@ public class PageFragment extends Fragment {
 
         listItems = new ArrayList<String>();
 
-	User u = User.register("sb1", "passwd1");
+        User u = null;
+        try {
+            u = User.register("sb1", "passwd1");
+        }
+        catch (UserRegisterException e)
+        {
+            listItems.add(e.getMessage());
+        }
 
-	try
-	{
-		u = User.register("sb1", "passwd2");
-	}
-	catch (UserRegisterException e)
-	{
-		listItems.add(e.message());
-	}
+        try
+        {
+            u = User.register("sb1", "passwd2");
+        }
+        catch (UserRegisterException e)
+        {
+            listItems.add(e.getMessage());
+        }
 
-	try
-	{
-		u = User.register("sb2", "sh");
-	}
-	catch (UserRegisterException e)
-	{
-		listItems.add(e.message());
-	}
-	
-	try
-	{
-		u = User.login("sb", "passwd1");
-	}
-	catch (UserLoginException e)
-	{
-		listItems.add(e.message());
-	}
+        try
+        {
+            u = User.register("sb2", "sh");
+        }
+        catch (UserRegisterException e)
+        {
+            listItems.add(e.getMessage());
+        }
+    
+        try
+        {
+            u = User.login("sb", "passwd1");
+        }
+        catch (UserLoginException e)
+        {
+            listItems.add(e.getMessage());
+        }
 
         listItems.add("Caonima");
         listItems.add("Shabi");
