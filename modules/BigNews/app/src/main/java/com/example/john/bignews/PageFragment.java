@@ -92,12 +92,11 @@ public class PageFragment extends Fragment {
 
 
 
-            int s_height = 1280;
             int s_width = 720;
 
             ViewGroup.LayoutParams para;
             para = imageView.getLayoutParams();
-            para.height = s_height;
+            para.height = 150;
             para.width = s_width;
 
 
