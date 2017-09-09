@@ -1,4 +1,4 @@
-package thucst53.usermanager;
+package com.example.hq.usermanager;
 
 /**
  * Created by ThinkPad on 2017/9/5.

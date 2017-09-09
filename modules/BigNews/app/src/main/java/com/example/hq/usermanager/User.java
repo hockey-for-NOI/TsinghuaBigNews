@@ -1,4 +1,4 @@
-package thucst53.usermanager;
+package com.example.hq.usermanager;
 
 import java.util.*;
 
