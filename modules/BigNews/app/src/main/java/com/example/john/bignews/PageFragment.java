@@ -1,6 +1,7 @@
 package com.example.john.bignews;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -42,7 +43,6 @@ public class PageFragment extends Fragment {
 
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -55,7 +55,7 @@ public class PageFragment extends Fragment {
         listItems.add("NImabi");
         listItems.add("C!");
         listView.setAdapter(new ListAdapter(view.getContext(), listItems));
-
+        listView.setOnItemClickListener(new ClickEvent());
         return view;
     }
 
@@ -90,7 +90,9 @@ public class PageFragment extends Fragment {
             TextView textView = (TextView)view.findViewById(R.id.text_name);
             ImageView imageView = (ImageView)view.findViewById(R.id.imageview);
 
-            int s_height = 150;
+
+
+            int s_height = 1280;
             int s_width = 720;
 
             ViewGroup.LayoutParams para;
@@ -110,6 +112,15 @@ public class PageFragment extends Fragment {
             imageView.setImageResource(R.drawable.z0);
 
             return view;
+        }
+    }
+
+    private class ClickEvent implements AdapterView.OnItemClickListener
+    {
+        @Override
+        public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
+        {
+            // TODO Auto-generated method stub
         }
     }
 
