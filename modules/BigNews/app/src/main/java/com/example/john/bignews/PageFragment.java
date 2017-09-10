@@ -60,7 +60,7 @@ public class PageFragment extends Fragment {
         try {
             Newsabs.userGrab(User.getUser(), new NewsParam().setCategory(Category.getNum(pageCategory)));
         }
-        catch (Exception e) {}
+        catch (Exception e) {listItems.add(e.getMessage());}
         try {
             ArrayList<Newsabs> tmp = Newsabs.getCachedAbstractByCategory(User.getUser(), pageCategory);
             for (int i=0; i<tmp.size(); i++) listItems.add(tmp.get(i).getAbs());
