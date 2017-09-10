@@ -8,13 +8,14 @@ import android.widget.*;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static int static_width, static_height;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        int screen_w = getResources().getDisplayMetrics().widthPixels;
-        int screen_h = getResources().getDisplayMetrics().heightPixels;
+        static_width = getResources().getDisplayMetrics().widthPixels;
+        static_height = getResources().getDisplayMetrics().heightPixels;
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), this);
