@@ -92,21 +92,15 @@ public class PageFragment extends Fragment {
             TextView textView = (TextView)view.findViewById(R.id.text_name);
             ImageView imageView = (ImageView)view.findViewById(R.id.imageview);
 
-
-
-            int s_width = 720;
-
             ViewGroup.LayoutParams para;
             para = imageView.getLayoutParams();
-            para.height = 150;
-            para.width = s_width;
+            para.height = MainActivity.static_width/5;
+            para.width = MainActivity.static_width/5;
 
 
             textView.setText(listItem.get(position).toString());
 
-            textView.setWidth(510);
-
-            para.width = 150;
+            textView.setWidth(MainActivity.static_width - para.width - 60);
 
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setLayoutParams(para);
