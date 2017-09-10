@@ -27,14 +27,14 @@ import java.util.Map;
 
 public class PageFragment extends Fragment {
     public static final String ARGS_PAGE = "args_page";
-    private int mPage;
+    private String pageCategory;
     private ArrayList<String> listItems;
     private FragmentManager fm;
     private FragmentTransaction ft;
 
-    public static PageFragment newInstance(int page) {
+    public static PageFragment newInstance(String category) {
         Bundle args = new Bundle();
-        args.putInt(ARGS_PAGE, page);
+        args.putString(ARGS_PAGE, category);
         PageFragment fragment = new PageFragment();
         fragment.setArguments(args);
         return fragment;
@@ -43,7 +43,7 @@ public class PageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPage = getArguments().getInt(ARGS_PAGE);
+        pageCategory = getArguments().getString(ARGS_PAGE);
     }
 
 
