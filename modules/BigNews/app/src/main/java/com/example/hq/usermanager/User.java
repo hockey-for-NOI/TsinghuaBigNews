@@ -22,6 +22,8 @@ public class User extends SugarRecord {
 
     private static  User    user;
     public static   User    getUser() {return user;}
+    public static   void   setUser(User u) {user = u;}
+    public static   boolean isGuest() {return user.getName().compareTo("guest") == 0;}
 
     public String   getName() {return name;}
 
@@ -38,12 +40,12 @@ public class User extends SugarRecord {
     public PersonalSettings getPersonalSettings() {return new PersonalSettings(personal_settings);}
 
     public  static  ArrayList<String> getFavouriteCategories() {
-        if (user == null) return Category.getAllNames();
+        if (isGuest()) return Category.getAllNames();
         return user.getPersonalSettings().getFavouriteCategories();
     }
 
     public  static  void    setFavouriteCategories(ArrayList<String> fc) throws UserNullException {
-        if (user == null) throw new UserNullException();
+        if (isGuest()) throw new UserNullException();
         user.personal_settings = user.getPersonalSettings().setFavouriteCategories(fc).toString();
     }
 
@@ -61,12 +63,14 @@ public class User extends SugarRecord {
         if (str1.length() < 4) return false;
         return true;
     }
-    public  static  User    register(String username, String raw_passwd) throws UserRegisterException
+    public  static  User    register(String username, String raw_passwd,
+                                     String confirm_passwd) throws UserRegisterException
     {
         List<User> lu = User.find(User.class, "name = ?", username);
         if (!lu.isEmpty()) throw new UserRegisterException();
         if (username.length() == 0) throw new UserRegisterException("");
         if (!passwdChk(raw_passwd)) throw new UserRegisterException(0);
+        if (raw_passwd.compareTo(confirm_passwd) != 0) throw new UserRegisterException(0.1);
 
         User u = new User(username, salted(raw_passwd));
         u.save();
@@ -92,7 +96,7 @@ public class User extends SugarRecord {
 
     public static void  changePassword(String raw_old_passwd, String raw_new_passwd, String raw_confirm_passwd)
             throws UserChangePasswordException, UserNullException {
-        if (user == null) throw new UserNullException();
+        if (isGuest()) throw new UserNullException();
         user.changePasswd(raw_old_passwd, raw_new_passwd, raw_confirm_passwd);
     }
 
