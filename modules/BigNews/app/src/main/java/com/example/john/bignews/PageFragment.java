@@ -1,6 +1,8 @@
 package com.example.john.bignews;
 
 import com.example.hq.usermanager.*;
+import com.example.sth.net.Category;
+import com.example.sth.net.NewsParam;
 
 import android.content.Context;
 import android.content.Intent;
@@ -53,8 +55,17 @@ public class PageFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_page, container, false);
         ListView listView = (ListView) view.findViewById(R.id.listView);
+        listItems = new ArrayList<String>();
 
-        listItems = User.getFavouriteCategories(); //TODO
+        try {
+            Newsabs.userGrab(User.getUser(), new NewsParam().setCategory(Category.getNum(pageCategory)));
+        }
+        catch (Exception e) {}
+        try {
+            ArrayList<Newsabs> tmp = Newsabs.getCachedAbstractByCategory(User.getUser(), pageCategory);
+            for (int i=0; i<tmp.size(); i++) listItems.add(tmp.get(i).getAbs());
+        }
+        catch (Exception e) {listItems.add(e.getMessage());}
         listItems.add(pageCategory);
         listItems.add(pageCategory);
         listItems.add(pageCategory);

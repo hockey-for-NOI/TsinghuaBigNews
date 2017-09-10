@@ -10,8 +10,11 @@ public class UserRegisterException extends Exception {
         super("Duplicate Username.");
     }
 
-    public UserRegisterException(int dummy)
+    public UserRegisterException(String dummy)
     {
-        super("Password too weak.");
+        super("Please fill in username.");
     }
+
+    public UserRegisterException(int dummy) {super("Password too weak");}
+    public UserRegisterException(double dummy) {super("Confirm password mismatch.");}
 }
