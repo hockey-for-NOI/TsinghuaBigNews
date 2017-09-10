@@ -1,8 +1,11 @@
 package com.example.hq.usermanager;
 
+import com.example.sth.net.NewsAPI;
+import com.example.sth.net.NewsParam;
 import com.orm.SugarRecord;
 import org.json.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +17,8 @@ public class Newsabs extends SugarRecord {
     User owner;
     String jsonstr;
     String category;
+    String title;
+    String content;
 
     public Newsabs() {
     }
@@ -25,13 +30,24 @@ public class Newsabs extends SugarRecord {
         try {
             JSONObject obj = new JSONObject(jsonstr);
             this.category = obj.getString("newsClassTag");
+            this.title = obj.getString("news_Title");
+            this.content = obj.getString("news_Intro");
         }
         catch (Exception e) {
             this.category = "";
+            this.title = "";
+            this.content = "";
         }
     }
 
-    public static ArrayList<Newsabs> userGrab(User owner, String grabRes) {
+    public static ArrayList<Newsabs> userGrab(User owner, NewsParam params) throws NewsGrabError{
+        String grabRes = "";
+        try {
+            grabRes = NewsAPI.getNews(params);
+        }
+        catch (IOException e) {
+            throw new NewsGrabError();
+        }
         ArrayList<Newsabs> result = new ArrayList<Newsabs>();
         try {
             JSONObject obj = new JSONObject(grabRes);
@@ -69,4 +85,8 @@ public class Newsabs extends SugarRecord {
         return lis.size();
     }
 
+    public String getTitle() {return title;}
+    public String getContent() {return content;}
+
+    public String getAbs() {return title + ":" + content;}
 }

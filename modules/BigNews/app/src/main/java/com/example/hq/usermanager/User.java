@@ -65,7 +65,7 @@ public class User extends SugarRecord {
     {
         List<User> lu = User.find(User.class, "name = ?", username);
         if (!lu.isEmpty()) throw new UserRegisterException();
-
+        if (username.length() == 0) throw new UserRegisterException("");
         if (!passwdChk(raw_passwd)) throw new UserRegisterException(0);
 
         User u = new User(username, salted(raw_passwd));
@@ -73,13 +73,21 @@ public class User extends SugarRecord {
         return user = u;
     }
 
-    public  static  User    login(String username, String raw_passwd) throws UserLoginException
+    public  static  User    login(String username, String raw_passwd,
+                                  boolean rememberName, boolean rememberPasswd) throws UserLoginException
     {
         List<User> lu = User.find(User.class, "name = ?", username);
         if (lu.isEmpty()) throw new UserLoginException();
         User u = lu.get(0);
-        if (u.salted_passwd.compareTo(salted(raw_passwd)) == 0) return user = u;
-        throw new UserLoginException(0);
+        if (u.salted_passwd.compareTo(salted(raw_passwd)) != 0) throw new UserLoginException(0);
+        user = u;
+        if (rememberName)
+        {
+            if (rememberPasswd) StoredUser.rememberPassword();
+            else {StoredUser.rememberUsername(); StoredUser.forgetPassword();};
+        }
+        else StoredUser.forgetUsername();
+        return u;
     }
 
     public static void  changePassword(String raw_old_passwd, String raw_new_passwd, String raw_confirm_passwd)
@@ -101,11 +109,9 @@ public class User extends SugarRecord {
     public static   void    logout() throws UserNullException {
         if (user == null) throw new UserNullException();
         user = null;
+        StoredUser.forgetUsername();
     }
 
     public static   void    logout_anyway() {user = null;}
 
-    static {
-        logout_anyway();
-    }
 }

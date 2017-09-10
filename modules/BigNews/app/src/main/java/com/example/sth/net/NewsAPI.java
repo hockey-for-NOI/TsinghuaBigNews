@@ -13,7 +13,7 @@ import java.net.URL;
 //NewsAPI.getNews(new NewsParam().setCategory(1).setPageSize(10));  //search latest technology news, show 10 pieces of news per page
 //String s = NewsAPI.getNews(new NewsParam().setKeyword("江泽民")); //search by keyword
 
-class NewsAPI {
+public class NewsAPI {
 	
 	//see parameter details in NewsParam 
 	public static String getNews(NewsParam p) throws MalformedURLException,IOException {
