@@ -55,6 +55,9 @@ public class PageFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.listView);
 
         listItems = User.getFavouriteCategories(); //TODO
+        listItems.add(pageCategory);
+        listItems.add(pageCategory);
+        listItems.add(pageCategory);
 
         listView.setAdapter(new ListAdapter(view.getContext(), listItems));
         listView.setOnItemClickListener(new ClickEvent());
