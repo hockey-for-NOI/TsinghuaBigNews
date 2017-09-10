@@ -56,13 +56,19 @@ public class PageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_page, container, false);
         ListView listView = (ListView) view.findViewById(R.id.listView);
 
+	/*
         try {
             Newsabs.userGrab(User.getUser(), new NewsParam().setCategory(Category.getNum(pageCategory)));
         }
         catch (NewsGrabError e) {}
         ArrayList<Newsabs> tmp = Newsabs.getCachedAbstractByCategory(User.getUser(), pageCategory);
-        listItems = new ArrayList<String>();
+
         for (int i=0; i<tmp.size(); i++) listItems.add(tmp.get(i).getAbs());
+	*/
+        listItems = new ArrayList<String>();
+        listItems.add(pageCategory);
+        listItems.add(pageCategory);
+        listItems.add(pageCategory);
 
         listView.setAdapter(new ListAdapter(view.getContext(), listItems));
         listView.setOnItemClickListener(new ClickEvent());
