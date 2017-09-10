@@ -18,7 +18,7 @@
             android:value="sugar_users.db" />
         <meta-data
             android:name="VERSION"
-            android:value="10001" />
+            android:value="20000" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -40,7 +40,8 @@
         <activity
             android:name=".Login"
             android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Register"></activity>
     </application>
 
 </manifest>

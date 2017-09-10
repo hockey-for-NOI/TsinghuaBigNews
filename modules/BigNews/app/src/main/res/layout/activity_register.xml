@@ -13,10 +13,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100px"
         android:textSize="50px"
-        android:text="Login"/>
+        android:text="Register"/>
 
     <EditText
-        android:id="@+id/EditLogUser"
+        android:id="@+id/EditRegUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50px"
@@ -25,7 +25,7 @@
         android:hint="Username" />
 
     <EditText
-        android:id="@+id/EditLogPass"
+        android:id="@+id/EditRegPass1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50px"
@@ -34,8 +34,19 @@
         android:hint="Username"
         android:inputType="textPassword"/>
 
+    <EditText
+        android:id="@+id/EditRegPass2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50px"
+        android:layout_marginRight="50px"
+        android:layout_marginTop="50px"
+        android:hint="Username"
+        android:inputType="textPassword"/>
+
+
     <TextView
-        android:id="@+id/LogWarn"
+        android:id="@+id/RegWarn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50px"
@@ -43,15 +54,15 @@
         android:layout_marginTop="50px"
         android:textColor="#FF0000"/>
     <Button
-        android:id="@+id/LogButton"
+        android:id="@+id/RegButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login"/>
 
     <TextView
-        android:id="@+id/RegisterText"
+        android:id="@+id/LoginText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register"
+        android:text="Login"
         android:textColor="#87CEFF"/>
 </LinearLayout>

@@ -1,11 +1,8 @@
 package com.example.john.bignews;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,9 +10,7 @@ import android.widget.TextView;
 
 import com.example.hq.usermanager.User;
 
-import org.w3c.dom.Text;
-
-public class Login extends AppCompatActivity {
+public class Register extends AppCompatActivity {
 
     private Intent intent;
     private TextView warn;
@@ -23,21 +18,22 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        intent = new Intent(this, Register.class);
+        setContentView(R.layout.activity_register);
 
-        warn = (TextView)findViewById(R.id.LogWarn);
-        Button logBut = (Button)findViewById(R.id.LogButton);
-        TextView regT = (TextView)findViewById(R.id.RegisterText);
+        intent = new Intent(this, Login.class);
+        warn = (TextView)findViewById(R.id.RegWarn);
+        Button logBut = (Button)findViewById(R.id.RegButton);
+        TextView regT = (TextView)findViewById(R.id.LoginText);
 
         logBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText editUser = (EditText)findViewById(R.id.EditLogUser);
-                EditText editPass = (EditText)findViewById(R.id.EditLogPass);
+                EditText editUser = (EditText)findViewById(R.id.EditRegUser);
+                EditText editPass1 = (EditText)findViewById(R.id.EditRegPass1);
+                EditText editPass2 = (EditText)findViewById(R.id.EditRegPass2);
                 try
                 {
-                    User.login(editUser.getText().toString(),editPass.getText().toString());
+                    User.register(editUser.getText().toString(),editPass1.getText().toString());
                     finish();
                 }
                 catch(Exception e)
@@ -54,6 +50,7 @@ public class Login extends AppCompatActivity {
                 finish();
             }
         });
-    }
 
+
+    }
 }
