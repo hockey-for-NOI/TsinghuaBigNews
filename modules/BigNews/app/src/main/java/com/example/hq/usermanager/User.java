@@ -72,7 +72,7 @@ public class User extends SugarRecord {
         if (!passwdChk(raw_passwd)) throw new UserRegisterException(0);
         if (raw_passwd.compareTo(confirm_passwd) != 0) throw new UserRegisterException(0.1);
 
-        User u = new User(username, salted(raw_passwd));
+        User u = new User(username, raw_passwd);
         u.save();
         return user = u;
     }

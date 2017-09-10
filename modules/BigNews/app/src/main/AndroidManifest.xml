@@ -13,10 +13,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name="com.example.john.bignews.MainApplication">
-        <meta-data android:name="DATABASE" android:value="sugar_users.db" />
-        <meta-data android:name="VERSION" android:value="1" />
-        <meta-data android:name="QUERY_LOG" android:value="true" />
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.example.hq.usermanager" />
+        <meta-data
+            android:name="DATABASE"
+            android:value="sugar_users.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="20000" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="com.example.hq.usermanager" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +39,8 @@
         <activity
             android:name=".Login"
             android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Register"></activity>
     </application>
 
 </manifest>
