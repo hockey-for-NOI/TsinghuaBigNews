@@ -1,6 +1,7 @@
 package com.example.hq.usermanager;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.*;
 
 import com.example.sth.net.Category;
@@ -31,52 +32,19 @@ public class User extends SugarRecord {
     {
         this.name = name;
         this.salted_passwd = salted(raw_passwd);
-        this.personal_settings = getDefaultPersonalSettings();
+        this.personal_settings = (new PersonalSettings()).toString();
     }
 
-    private static  String  getDefaultPersonalSettings()
-    {
-        JSONObject obj = new JSONObject();
-
-        JSONArray favouriteCategories = new JSONArray(Category.getAllNames());
-
-        try {
-            obj.put("favouriteCategories", favouriteCategories);
-        }
-        catch (JSONException e) {}
-
-        return obj.toString();
-    }
-
-    private ArrayList<String> getFC()
-    {
-        ArrayList<String> res = null;
-        try
-        {
-            JSONArray jres = (new JSONObject(this.personal_settings)).getJSONArray("favouriteCategories");
-            res = new ArrayList<String>();
-            for (int i=0; i<jres.length(); i++) res.add(jres.getString(i));
-        }
-        catch (JSONException e) {res = Category.getAllNames();} finally {return res;}
-    }
+    public PersonalSettings getPersonalSettings() {return new PersonalSettings(personal_settings);}
 
     public  static  ArrayList<String> getFavouriteCategories() {
         if (user == null) return Category.getAllNames();
-        return user.getFC();
+        return user.getPersonalSettings().getFavouriteCategories();
     }
 
-    private void    setFC(List<String> fc) {
-        try {
-            JSONObject obj = new JSONObject(this.personal_settings);
-            JSONArray jarr = new JSONArray(fc);
-            obj.put("favouriteCategories", jarr);
-            this.personal_settings = obj.toString();
-        } catch (JSONException e) {}
-    }
-
-    public  static  void    setFavouriteCategories(List<String> fc) throws UserNullException {
+    public  static  void    setFavouriteCategories(ArrayList<String> fc) throws UserNullException {
         if (user == null) throw new UserNullException();
-        user.setFC(fc);
+        user.personal_settings = user.getPersonalSettings().setFavouriteCategories(fc).toString();
     }
 
     private static  String  salted(String str1)
@@ -102,19 +70,25 @@ public class User extends SugarRecord {
 
         User u = new User(username, salted(raw_passwd));
         u.save();
-        return u;
+        return user = u;
     }
 
     public  static  User    login(String username, String raw_passwd) throws UserLoginException
     {
         List<User> lu = User.find(User.class, "name = ?", username);
         if (lu.isEmpty()) throw new UserLoginException();
-        User    u = lu.get(0);
-        if (u.salted_passwd.compareTo(salted(raw_passwd)) == 0) return u;
+        User u = lu.get(0);
+        if (u.salted_passwd.compareTo(salted(raw_passwd)) == 0) return user = u;
         throw new UserLoginException(0);
     }
 
-    public void  changePassword(String raw_old_passwd, String raw_new_passwd, String raw_confirm_passwd) throws UserChangePasswordException{
+    public static void  changePassword(String raw_old_passwd, String raw_new_passwd, String raw_confirm_passwd)
+            throws UserChangePasswordException, UserNullException {
+        if (user == null) throw new UserNullException();
+        user.changePasswd(raw_old_passwd, raw_new_passwd, raw_confirm_passwd);
+    }
+
+    public void  changePasswd(String raw_old_passwd, String raw_new_passwd, String raw_confirm_passwd) throws UserChangePasswordException{
         if (this.salted_passwd.compareTo(salted(raw_old_passwd)) != 0)
             throw new UserChangePasswordException();
         if (raw_new_passwd.compareTo(salted(raw_confirm_passwd)) != 0)
@@ -122,5 +96,16 @@ public class User extends SugarRecord {
         if (!passwdChk(raw_new_passwd))
             throw new UserChangePasswordException("");
         this.salted_passwd = salted(raw_new_passwd);
+    }
+
+    public static   void    logout() throws UserNullException {
+        if (user == null) throw new UserNullException();
+        user = null;
+    }
+
+    public static   void    logout_anyway() {user = null;}
+
+    static {
+        logout_anyway();
     }
 }
