@@ -1,3 +1,5 @@
+package com.example.sth.net;
+
 /*
 num  name
 1    科技
@@ -14,6 +16,8 @@ num  name
 12   娱乐
  */
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +35,12 @@ public class Category {
 	public static String getName(int num) {
 		return name[num];
 	}
-	
+	public static ArrayList<String> getAllNames()
+	{
+		ArrayList<String> tmp = new ArrayList<String>(Arrays.asList(name));
+		tmp.remove(0);
+		return tmp;
+	}
 	public static int getNum(String name) {
 		return num.get(name);
 	}

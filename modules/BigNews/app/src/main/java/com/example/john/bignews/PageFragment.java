@@ -54,48 +54,8 @@ public class PageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_page, container, false);
         ListView listView = (ListView) view.findViewById(R.id.listView);
 
-        listItems = new ArrayList<String>();
+        listItems = User.getFavouriteCategories(); //TODO
 
-        User u = null;
-        try {
-            u = User.register("sb1", "passwd1");
-        }
-        catch (UserRegisterException e)
-        {
-            listItems.add(e.getMessage());
-        }
-
-        try
-        {
-            u = User.register("sb1", "passwd2");
-        }
-        catch (UserRegisterException e)
-        {
-            listItems.add(e.getMessage());
-        }
-
-        try
-        {
-            u = User.register("sb2", "sh");
-        }
-        catch (UserRegisterException e)
-        {
-            listItems.add(e.getMessage());
-        }
-    
-        try
-        {
-            u = User.login("sb", "passwd1");
-        }
-        catch (UserLoginException e)
-        {
-            listItems.add(e.getMessage());
-        }
-
-        listItems.add("Caonima");
-        listItems.add("Shabi");
-        listItems.add("NImabi");
-        listItems.add("C!");
         listView.setAdapter(new ListAdapter(view.getContext(), listItems));
         listView.setOnItemClickListener(new ClickEvent());
         return view;

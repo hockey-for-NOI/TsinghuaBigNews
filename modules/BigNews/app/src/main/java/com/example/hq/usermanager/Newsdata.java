@@ -11,7 +11,7 @@ import org.json.JSONObject;
  * Created by ThinkPad on 2017/9/5.
  */
 
-public class Newsdata extends SugarRecord<Newsdata> {
+public class Newsdata extends SugarRecord {
     User owner;
     String jsonstr;
 

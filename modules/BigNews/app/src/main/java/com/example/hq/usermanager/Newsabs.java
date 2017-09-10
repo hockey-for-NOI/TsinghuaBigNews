@@ -10,7 +10,7 @@ import java.util.List;
  * Created by ThinkPad on 2017/9/5.
  */
 
-public class Newsabs extends SugarRecord<Newsabs> {
+public class Newsabs extends SugarRecord {
     User owner;
     String jsonstr;
     String category;

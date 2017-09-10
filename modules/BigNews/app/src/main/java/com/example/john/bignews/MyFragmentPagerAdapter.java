@@ -5,19 +5,22 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.content.Context;
+
+import com.example.hq.usermanager.User;
+
+import java.util.ArrayList;
+
 /**
  * Created by John on 2017/9/7.
  */
 
 class MyFragmentPagerAdapter extends FragmentPagerAdapter {
-    public int COUNT = 0;
-    private String[] titles;
+    private ArrayList<String> titles;
     private Context context;
 
     public MyFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
-        COUNT = 7;
-        titles = new String[]{"Tab1", "Tab2", "Tab3", "Tab4", "Tab5", "SB", "CNM"};
+        titles = User.getFavouriteCategories();
         this.context = context;
     }
 
@@ -29,11 +32,11 @@ class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return COUNT;
+        return titles.size();
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return titles[position];
+        return titles.get(position);
     }
 }

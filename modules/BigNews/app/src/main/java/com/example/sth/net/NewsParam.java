@@ -1,3 +1,5 @@
+package com.example.sth.net;
+
 //pageNo <= pageSize !!!!!
 
 public class NewsParam {
