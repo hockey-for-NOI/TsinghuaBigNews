@@ -27,7 +27,7 @@ class MyFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position)
     {
-        return PageFragment.newInstance(position + 1);
+        return PageFragment.newInstance(titles.get(position));
     }
 
     @Override
