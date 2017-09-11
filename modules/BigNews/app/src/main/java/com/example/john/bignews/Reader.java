@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.hq.usermanager.Newsdata;
+
 public class Reader extends AppCompatActivity {
 
     private String str;
@@ -17,7 +19,7 @@ public class Reader extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reader);
         Bundle bundle = this.getIntent().getExtras();
-        str = bundle.getString("sb");
+        str = Newsdata.get(bundle.getString("ID")).getDisplay();
         TextView textView = (TextView) findViewById(R.id.ReaderText);
         textView.setText(str);
     }

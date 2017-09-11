@@ -33,7 +33,7 @@ public class Register extends AppCompatActivity {
                 EditText editPass2 = (EditText)findViewById(R.id.EditRegPass2);
                 try
                 {
-//                    User.register(editUser.getText().toString(), editPass1.getText().toString(), editPass2.getText().toString());
+                    User.register(editUser.getText().toString(), editPass1.getText().toString(), editPass2.getText().toString());
                     finish();
                 }
                 catch(Exception e)

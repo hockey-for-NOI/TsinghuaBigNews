@@ -44,4 +44,5 @@ public class Category {
 	public static int getNum(String name) {
 		return num.get(name);
 	}
+	public static	int getCategoryNumber() {return categoryNumber;}
 }

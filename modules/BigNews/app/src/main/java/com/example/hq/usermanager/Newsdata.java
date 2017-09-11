@@ -3,6 +3,8 @@ package com.example.hq.usermanager;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.sth.net.NewsAPI;
+import com.example.sth.net.NewsParam;
 import com.orm.SugarRecord;
 
 import org.json.JSONObject;
@@ -12,31 +14,47 @@ import org.json.JSONObject;
  */
 
 public class Newsdata extends SugarRecord {
-    User owner;
+    String newsid;
     String jsonstr;
+    String display;
+
+    public String   getNewsID() {return newsid;}
 
     public Newsdata() {}
 
-    public Newsdata(User owner, String jsonstr) {
-        this.owner = owner;
+    public Newsdata(String newsid, String jsonstr) {
+        this.newsid = newsid;
         this.jsonstr = jsonstr;
+        try {
+            JSONObject jobj = new JSONObject(jsonstr);
+            this.display = jobj.getString("news_Category") + "\n" +
+                    jobj.getString("news_Title") + "\n" +
+                    jobj.getString("news_Content") + "\n" +
+                    jobj.getString("news_Pictures") + "\n" +
+                    jobj.getString("news_Journal") + "\n" +
+                    jobj.getString("news_Time") + "\n" +
+                    "";
+        }
+        catch (Exception e) {}
     }
 
-    public  static  Newsdata    userSave(User owner, String detail) {
+    public  static  void    grab(String newsid) {
+        List<Newsdata> tmp = Newsdata.find(Newsdata.class, "newsid = ?", newsid);
+        if (tmp.size() > 0) return;
         try {
+            String detail = NewsAPI.getNews(new NewsParam().setID(newsid));
             JSONObject obj = new JSONObject(detail);
-            Newsdata data = new Newsdata(owner, detail);
+            Newsdata data = new Newsdata(newsid, detail);
             data.save();
-            return data;
         }
         catch (Exception e) {
-            return null;
         }
     }
 
-    public static   ArrayList<Newsdata> getSavedDetail(User owner) {
-        List<Newsdata> lis = Newsdata.find(Newsdata.class, "owner = ?", owner.getId().toString());
-        ArrayList<Newsdata> alis = new ArrayList<Newsdata>(lis);
-        return alis;
+    public  static  Newsdata    get(String newsid) {
+        List<Newsdata> tmp = Newsdata.find(Newsdata.class, "newsid = ?", newsid);
+        if (tmp.size() > 0) return tmp.get(0); else return new Newsdata("", "\"news_Title\": \"404 Not Found\", \"news_Content\": \"Check your Internet connection and flush the page.\"}");
     }
+
+    public  String  getDisplay() {return display;}
 }

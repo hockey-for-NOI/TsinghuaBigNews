@@ -14,17 +14,16 @@ import java.util.List;
  */
 
 public class Newsabs extends SugarRecord {
-    User owner;
     String jsonstr;
     String category;
     String title;
     String content;
+    String newsid;
 
     public Newsabs() {
     }
 
-    public Newsabs(User owner, String jsonstr) {
-        this.owner = owner;
+    public Newsabs(String jsonstr) {
         this.jsonstr = jsonstr;
 
         try {
@@ -32,15 +31,17 @@ public class Newsabs extends SugarRecord {
             this.category = obj.getString("newsClassTag");
             this.title = obj.getString("news_Title");
             this.content = obj.getString("news_Intro");
+            this.newsid = obj.getString("news_ID");
         }
         catch (Exception e) {
             this.category = "";
             this.title = "";
             this.content = "";
+            this.newsid = "";
         }
     }
 
-    public static ArrayList<Newsabs> userGrab(User owner, NewsParam params){
+    public static ArrayList<Newsabs> grab(NewsParam params){
         String grabRes = "";
         try {
             grabRes = NewsAPI.getNews(params);
@@ -54,8 +55,9 @@ public class Newsabs extends SugarRecord {
             JSONArray arr = obj.optJSONArray("list");
             for (int i=0; i<arr.length(); i++) {
                 JSONObject subObj = arr.getJSONObject(i);
-                Newsabs convAbs = new Newsabs(owner, subObj.toString());
-                result.add(convAbs);
+                Newsabs convAbs = new Newsabs(subObj.toString());
+                if (Newsabs.find(Newsabs.class, "newsid = ?", convAbs.newsid).size() > 0) continue;
+                result.add(convAbs); convAbs.save();
             }
        }
         catch (Exception e) {
@@ -67,26 +69,15 @@ public class Newsabs extends SugarRecord {
         }
     }
 
-    public static   ArrayList<Newsabs> getCachedAbstract(User owner) {
-        List<Newsabs> lis = Newsabs.find(Newsabs.class, "owner = ?", owner.getId().toString());
+    public static   ArrayList<Newsabs> getCachedAbstractByCategory(String category) {
+        List<Newsabs> lis = Newsabs.find(Newsabs.class, "category = ?", category);
         ArrayList<Newsabs> alis = new ArrayList<Newsabs>(lis);
         return alis;
-    }
-
-    public static   ArrayList<Newsabs> getCachedAbstractByCategory(User owner, String category) {
-        List<Newsabs> lis = Newsabs.find(Newsabs.class, "owner = ? and category = ?", owner.getId().toString(), category);
-        ArrayList<Newsabs> alis = new ArrayList<Newsabs>(lis);
-        return alis;
-    }
-
-    public static   int clearCachedAbstract(User owner) {
-        List<Newsabs> lis = Newsabs.find(Newsabs.class, "owner = ?", owner.getId().toString());
-        for (Newsabs i: lis) i.delete();
-        return lis.size();
     }
 
     public String getTitle() {return title;}
     public String getContent() {return content;}
+    public String getNewsID() {return newsid;}
 
     public String getAbs() {return title + ":" + content;}
 }
