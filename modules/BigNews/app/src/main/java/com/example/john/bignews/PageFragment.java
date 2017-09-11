@@ -64,7 +64,6 @@ public class PageFragment extends Fragment {
         t.start();
         ArrayList<Newsabs> tmp = Newsabs.getCachedAbstractByCategory(User.getUser(), pageCategory);
         for (int i=0; i<tmp.size(); i++) listItems.add(tmp.get(i).getAbs());
-
         listView.setAdapter(new ListAdapter(view.getContext(), listItems));
         listView.setOnItemClickListener(new ClickEvent());
         return view;
