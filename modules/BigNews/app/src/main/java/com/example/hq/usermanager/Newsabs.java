@@ -40,13 +40,13 @@ public class Newsabs extends SugarRecord {
         }
     }
 
-    public static ArrayList<Newsabs> userGrab(User owner, NewsParam params) throws NewsGrabError{
+    public static ArrayList<Newsabs> userGrab(User owner, NewsParam params){
         String grabRes = "";
         try {
             grabRes = NewsAPI.getNews(params);
         }
         catch (IOException e) {
-            throw new NewsGrabError();
+            //throw new NewsGrabError();
         }
         ArrayList<Newsabs> result = new ArrayList<Newsabs>();
         try {
