@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             app:fab_colorNormal="@color/colorPrimary"
             app:fab_colorPressed="@color/colorPrimaryDark"
-            app:fab_size="normal"
+            app:fab_size="mini"
             app:fab_label="Login"
             />
 
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             app:fab_colorNormal="@color/colorPrimary"
             app:fab_colorPressed="@color/colorPrimaryDark"
-            app:fab_size="normal"
+            app:fab_size="mini"
             app:fab_label="Register"
             />
     </com.github.clans.fab.FloatingActionMenu>

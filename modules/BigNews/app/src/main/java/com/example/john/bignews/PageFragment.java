@@ -30,7 +30,7 @@ import java.util.Map;
 public class PageFragment extends Fragment {
     public static final String ARGS_PAGE = "args_page";
     private String pageCategory;
-    private ArrayList<String> listItems;
+    private ArrayList<Newsabs> listItems;
     private FragmentManager fm;
     private FragmentTransaction ft;
 
@@ -55,15 +55,7 @@ public class PageFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_page, container, false);
         ListView listView = (ListView) view.findViewById(R.id.listView);
-        listItems = new ArrayList<String>();
-
-        Thread t = new Thread() {
-            public void run()
-            {Newsabs.userGrab(User.getUser(), new NewsParam().setCategory(Category.getNum(pageCategory)));}
-        };
-        t.start();
-        ArrayList<Newsabs> tmp = Newsabs.getCachedAbstractByCategory(User.getUser(), pageCategory);
-        for (int i=0; i<tmp.size(); i++) listItems.add(tmp.get(i).getAbs());
+        listItems = Newsabs.getCachedAbstractByCategory(pageCategory);
         listView.setAdapter(new ListAdapter(view.getContext(), listItems));
         listView.setOnItemClickListener(new ClickEvent());
         return view;
@@ -72,9 +64,9 @@ public class PageFragment extends Fragment {
     class ListAdapter extends BaseAdapter
     {
         LayoutInflater inflater;
-        private ArrayList<String> listItem;
+        private ArrayList<Newsabs> listItem;
 
-        public ListAdapter(Context context, ArrayList<String> listItems)
+        public ListAdapter(Context context, ArrayList<Newsabs> listItems)
         {
             inflater = LayoutInflater.from(context);
             this.listItem = listItems;
@@ -106,7 +98,7 @@ public class PageFragment extends Fragment {
             para.width = MainActivity.static_width/5;
 
 
-            textView.setText(listItem.get(position).toString());
+            textView.setText(listItem.get(position).getAbs());
 
             textView.setWidth(MainActivity.static_width - para.width - 60);
 
@@ -125,7 +117,16 @@ public class PageFragment extends Fragment {
         {
             Intent intent=new Intent(getActivity(), Reader.class);
             Bundle bundle = new Bundle();
-            bundle.putString("sb", listItems.get(arg2).toString());
+            bundle.putString("ID", listItems.get(arg2).getNewsID());
+
+            final   String idToGrab = listItems.get(arg2).getNewsID();
+            Thread t = new Thread() {
+                public void run() {
+                    Newsdata.grab(idToGrab);
+                }
+            };
+            t.start();
+
             intent.putExtras(bundle);
 
             startActivity(intent);

@@ -11,13 +11,16 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.*;
 
+import com.example.hq.usermanager.Newsabs;
 import com.example.hq.usermanager.User;
+import com.example.sth.net.Category;
 import com.github.clans.fab.FloatingActionButton;
-
+import com.example.sth.net.NewsParam;
 import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Thread[] news_grabber;
     public static MainActivity mainInstance;
     private FloatingActionButton fabInfo, fabLogin, fabRegister;
     private Intent intentLogin, intentRegister;
@@ -25,6 +28,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        news_grabber = new Thread[Category.getCategoryNumber()];
+        for (int tid = 1; tid <= Category.getCategoryNumber(); tid++){
+            final int tmp = tid;
+            Thread t = new Thread() {
+                public void run() {
+                    while (true) Newsabs.grab(new NewsParam().setCategory(tmp));
+                }
+            };
+            news_grabber[tid - 1] = t;
+            t.start();
+        }
+
         setContentView(R.layout.activity_main);
 
         mainInstance = this;
