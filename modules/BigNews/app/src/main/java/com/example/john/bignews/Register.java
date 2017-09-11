@@ -34,6 +34,7 @@ public class Register extends AppCompatActivity {
                 try
                 {
                     User.register(editUser.getText().toString(), editPass1.getText().toString(), editPass2.getText().toString());
+                    MainActivity.mainInstance.refreshUser();
                     finish();
                 }
                 catch(Exception e)

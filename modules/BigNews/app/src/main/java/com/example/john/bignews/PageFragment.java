@@ -56,7 +56,6 @@ public class PageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_page, container, false);
         ListView listView = (ListView) view.findViewById(R.id.listView);
         listItems = Newsabs.getCachedAbstractByCategory(pageCategory);
-
         listView.setAdapter(new ListAdapter(view.getContext(), listItems));
         listView.setOnItemClickListener(new ClickEvent());
         return view;

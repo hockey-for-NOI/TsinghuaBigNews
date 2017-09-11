@@ -37,7 +37,8 @@ public class Login extends AppCompatActivity {
                 EditText editPass = (EditText)findViewById(R.id.EditLogPass);
                 try
                 {
-                    User.login(editUser.getText().toString(),editPass.getText().toString(), false, false);
+                    User.login(editUser.getText().toString(),editPass.getText().toString(), true, true);
+                    MainActivity.mainInstance.refreshUser();
                     finish();
                 }
                 catch(Exception e)

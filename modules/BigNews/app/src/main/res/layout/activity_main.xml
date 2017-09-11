@@ -5,7 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.john.bignews.MainActivity">
-
+    <TextView
+        android:id="@+id/cloud"
+        android:visibility="gone"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FFFF"
+        />
 
     <LinearLayout
         android:id="@+id/mainLayout"
@@ -24,16 +30,50 @@
             android:id="@+id/viewPager"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:background="#ffffff"
             />
     </LinearLayout>
-    <android.support.design.widget.FloatingActionButton
-        app:rippleColor="#FF0000"
-        app:backgroundTint="#56abe4"
+    <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/UserPage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="@dimen/fab_margin"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:paddingRight="20px"
+        android:paddingBottom="20px"
+        android:paddingLeft="20px"
+        app:menu_colorNormal="@color/colorPrimary"
+        app:menu_colorPressed="@color/colorPrimaryDark"
+        app:menu_backgroundColor="#ccffffff">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/UserPageInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/colorPrimary"
+            app:fab_colorPressed="@color/colorPrimaryDark"
+            app:fab_size="normal"
+            app:fab_label="null"
+            />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/UserPageLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/colorPrimary"
+            app:fab_colorPressed="@color/colorPrimaryDark"
+            app:fab_size="normal"
+            app:fab_label="Login"
+            />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/UserPageRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/colorPrimary"
+            app:fab_colorPressed="@color/colorPrimaryDark"
+            app:fab_size="normal"
+            app:fab_label="Register"
+            />
+    </com.github.clans.fab.FloatingActionMenu>
 </android.support.design.widget.CoordinatorLayout>
