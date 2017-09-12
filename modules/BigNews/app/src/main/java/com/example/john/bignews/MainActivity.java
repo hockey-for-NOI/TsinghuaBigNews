@@ -24,27 +24,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        news_grabber = new Thread[Category.getCategoryNumber()];
-        for (int tid = 1; tid <= Category.getCategoryNumber(); tid++){
-            final int tmp = tid;
-            Thread t = new Thread() {
-                public void run() {
-                    while (true)
-                    {
-                        for (int page=1; page<=500; page++) {
-                            Newsabs.grab(new NewsParam().setCategory(tmp));
-                            Newsabs.grab(new NewsParam().setCategory(tmp).setPageNo(page).setPageSize(500));
-                            try {
-                                sleep(100);
-                            } catch (Exception e) {}
-                        }
-                    }
-                }
-            };
-            news_grabber[tid - 1] = t;
-            t.start();
-        }
-
         setContentView(R.layout.activity_main);
 
         mainInstance = this;
