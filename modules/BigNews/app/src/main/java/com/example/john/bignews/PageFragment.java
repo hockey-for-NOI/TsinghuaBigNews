@@ -28,7 +28,7 @@ public class PageFragment extends Fragment {
         args.putString(ARGS_PAGE, category);
         PageFragment fragment = new PageFragment();
         fragment.setArguments(args);
-        return fragment;
+            return fragment;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class PageFragment extends Fragment {
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                
+
             }
         });
 
