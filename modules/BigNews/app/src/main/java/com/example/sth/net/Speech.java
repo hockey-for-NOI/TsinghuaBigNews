@@ -51,4 +51,11 @@ public class Speech {
         //3.开始合成
         mTts.startSpeaking("科大讯飞，让世界聆听我们的声音", mSynListener);
     }
+
+
+    public static void stop(){
+        SpeechSynthesizer mTts= SpeechSynthesizer.getSynthesizer();
+        mTts.stopSpeaking();
+    }
+
 }
