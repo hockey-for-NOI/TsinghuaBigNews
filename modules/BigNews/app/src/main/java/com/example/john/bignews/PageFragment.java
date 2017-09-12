@@ -1,10 +1,13 @@
 package com.example.john.bignews;
 
 import com.example.hq.usermanager.*;
+import com.example.sth.net.Category;
+import com.example.sth.net.NewsParam;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -22,6 +25,10 @@ public class PageFragment extends Fragment {
     private ArrayList<Newsabs> listItems;
     private FragmentManager fm;
     private FragmentTransaction ft;
+    SwipeRefreshLayout srl;
+    View view;
+    Handler mHandler;
+    ListView listView;
 
     public static PageFragment newInstance(String category) {
         Bundle args = new Bundle();
@@ -41,21 +48,39 @@ public class PageFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mHandler = new Handler();
+        view = inflater.inflate(R.layout.fragment_page, container, false);
 
-        View view = inflater.inflate(R.layout.fragment_page, container, false);
-
-        SwipeRefreshLayout srl = (SwipeRefreshLayout) view.findViewById(R.id.srl);
+        srl = (SwipeRefreshLayout) view.findViewById(R.id.srl);
         srl.setProgressBackgroundColorSchemeResource(android.R.color.white);
         srl.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                
+                srl.setRefreshing(true);
+
+                new Thread(){
+                    @Override
+                    public  void    run() {
+                        Newsabs.grab(new NewsParam().setCategory(Category.getNum(pageCategory))
+                                .setPageNo(((listItems == null ? 0 : listItems.size()) + 519) / 500).setPageSize(500));
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                listItems = new ArrayList<Newsabs>(Newsabs.getCachedAbstractByCategory(pageCategory)
+                                        .subList(1, (listItems == null ? 0 : listItems.size()) + 20));
+                                listView.setAdapter(new ListAdapter(view.getContext(), listItems));
+                            }
+                        });
+                    }
+                }.start();
+
+                srl.setRefreshing(false);
             }
         });
 
-        ListView listView = (ListView) view.findViewById(R.id.listView);
-        listItems = Newsabs.getCachedAbstractByCategory(pageCategory);
+        listView = (ListView) view.findViewById(R.id.listView);
+        listItems = new ArrayList<Newsabs>(Newsabs.getCachedAbstractByCategory(pageCategory).subList(1,20));
         listView.setAdapter(new ListAdapter(view.getContext(), listItems));
         listView.setOnItemClickListener(new ClickEvent());
         return view;
@@ -88,7 +113,7 @@ public class PageFragment extends Fragment {
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
-            View view = inflater.inflate(R.layout.content_abstract_info, null);
+            view = inflater.inflate(R.layout.content_abstract_info, null);
             TextView textView = (TextView)view.findViewById(R.id.text_name);
             ImageView imageView = (ImageView)view.findViewById(R.id.imageview);
 

@@ -38,7 +38,7 @@ public class Newsabs extends SugarRecord {
             this.title = obj.getString("news_Title");
             this.content = obj.getString("news_Intro");
             this.newsid = obj.getString("news_ID");
-            this.time = (new SimpleDateFormat("M d, y hh:mm:ss a")).parse(obj.getString("news_Time")).getTime();
+            this.time = (new SimpleDateFormat("yyyyMMddHHmmss")).parse(obj.getString("news_Time")).getTime();
         }
         catch (Exception e) {
             this.category = "";
@@ -74,7 +74,6 @@ public class Newsabs extends SugarRecord {
             result = new ArrayList<Newsabs>();
         }
         finally {
-            for (Newsabs i: result) i.save();
             return result;
         }
     }

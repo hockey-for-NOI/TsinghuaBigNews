@@ -6,12 +6,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.ListView;
 
 import com.example.hq.usermanager.Newsabs;
 import com.example.hq.usermanager.User;
 import com.example.sth.net.Category;
 import com.github.clans.fab.FloatingActionButton;
 import com.example.sth.net.NewsParam;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +26,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        for (int i=1; i<=Category.getCategoryNumber(); i++) {
+            final int pid = i;
+            new Thread() {
+                @Override
+                public void run() {
+                    Newsabs.grab(new NewsParam().setCategory(pid)
+                            .setPageNo(1).setPageSize(20));
+                }
+            }.start();
+        }
 
         setContentView(R.layout.activity_main);
 
@@ -79,11 +93,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void refresh()
     {
-        fabInfo.setLabelText(User.getUser().getName());
-        fabLogout.setEnabled(!User.isGuest());
-
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), this);
-        viewPager.setAdapter(adapter);
+        startActivity(new Intent(MainActivity.this,MainActivity.class));
+        finish();
     }
 }
