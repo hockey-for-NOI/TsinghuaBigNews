@@ -1,31 +1,20 @@
 package com.example.john.bignews;
 
 import com.example.hq.usermanager.*;
-import com.example.sth.net.Category;
-import com.example.sth.net.NewsParam;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.DisplayMetrics;
-import android.view.Display;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class PageFragment extends Fragment {
     public static final String ARGS_PAGE = "args_page";
@@ -54,6 +43,17 @@ public class PageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_page, container, false);
+
+        SwipeRefreshLayout srl = (SwipeRefreshLayout) view.findViewById(R.id.srl);
+        srl.setProgressBackgroundColorSchemeResource(android.R.color.white);
+        srl.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                
+            }
+        });
+
         ListView listView = (ListView) view.findViewById(R.id.listView);
         listItems = Newsabs.getCachedAbstractByCategory(pageCategory);
         listView.setAdapter(new ListAdapter(view.getContext(), listItems));

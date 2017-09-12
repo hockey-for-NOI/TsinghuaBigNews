@@ -34,6 +34,5 @@ dependencies {
     compile 'com.android.support:support-v4:26.+'
     compile 'com.github.satyan:sugar:1.4'
     compile 'org.json:json:20160212'
-    compile 'com.jwenfeng.pulltorefresh:library:1.0.3'
     testCompile 'junit:junit:4.12'
 }
