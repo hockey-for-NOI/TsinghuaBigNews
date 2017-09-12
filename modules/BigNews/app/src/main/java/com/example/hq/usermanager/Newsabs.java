@@ -3,9 +3,13 @@ package com.example.hq.usermanager;
 import com.example.sth.net.NewsAPI;
 import com.example.sth.net.NewsParam;
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
+
 import org.json.*;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
