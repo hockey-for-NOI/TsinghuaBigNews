@@ -3,9 +3,12 @@ package com.example.hq.usermanager;
 import com.example.sth.net.NewsAPI;
 import com.example.sth.net.NewsParam;
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
+
 import org.json.*;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +22,7 @@ public class Newsabs extends SugarRecord {
     String title;
     String content;
     String newsid;
+    long time;
 
     public Newsabs() {
     }
@@ -32,6 +36,7 @@ public class Newsabs extends SugarRecord {
             this.title = obj.getString("news_Title");
             this.content = obj.getString("news_Intro");
             this.newsid = obj.getString("news_ID");
+            this.time = (new SimpleDateFormat("M d, y hh:mm:ss a")).parse(obj.getString("news_Time")).getTime();
         }
         catch (Exception e) {
             this.category = "";

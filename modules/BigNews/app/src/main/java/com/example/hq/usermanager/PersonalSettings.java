@@ -29,6 +29,7 @@ public class PersonalSettings {
             JSONObject jobj = new JSONObject(s);
 
             JSONArray jarr = jobj.getJSONArray("favouriteCategories");
+            favouriteCategories = new ArrayList<String>();
             favouriteCategories.clear();
             for (int i=0; i<jarr.length(); i++) favouriteCategories.add(jarr.getString(i));
         }

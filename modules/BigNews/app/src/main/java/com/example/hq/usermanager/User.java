@@ -47,6 +47,7 @@ public class User extends SugarRecord {
     public  static  void    setFavouriteCategories(ArrayList<String> fc) throws UserNullException {
         if (isGuest()) throw new UserNullException();
         user.personal_settings = user.getPersonalSettings().setFavouriteCategories(fc).toString();
+        user.save();
     }
 
     private static  String  salted(String str1)
@@ -74,7 +75,10 @@ public class User extends SugarRecord {
 
         User u = new User(username, raw_passwd);
         u.save();
-        return user = u;
+        try {
+            return login(username, raw_passwd, true, true);
+        } catch (Exception e) {}
+        return null;
     }
 
     public  static  User    login(String username, String raw_passwd,
@@ -111,8 +115,8 @@ public class User extends SugarRecord {
     }
 
     public static   void    logout() throws UserNullException {
-        if (user == null) throw new UserNullException();
-        user = null;
+        if (user.isGuest()) throw new UserNullException();
+        user = StoredUser.getGuest();
         StoredUser.forgetUsername();
     }
 

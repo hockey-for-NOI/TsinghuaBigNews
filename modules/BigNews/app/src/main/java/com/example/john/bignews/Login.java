@@ -38,7 +38,7 @@ public class Login extends AppCompatActivity {
                 try
                 {
                     User.login(editUser.getText().toString(),editPass.getText().toString(), true, true);
-                    MainActivity.mainInstance.refreshUser();
+                    MainActivity.mainInstance.refresh();
                     finish();
                 }
                 catch(Exception e)

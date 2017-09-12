@@ -119,14 +119,6 @@ public class PageFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putString("ID", listItems.get(arg2).getNewsID());
 
-            final   String idToGrab = listItems.get(arg2).getNewsID();
-            Thread t = new Thread() {
-                public void run() {
-                    Newsdata.grab(idToGrab);
-                }
-            };
-            t.start();
-
             intent.putExtras(bundle);
 
             startActivity(intent);
