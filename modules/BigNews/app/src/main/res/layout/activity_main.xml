@@ -76,5 +76,5 @@
             app:fab_size="mini"
             app:fab_label="Register"
             />
-    </com.github.clans.fab.FloatingActionMenu>
+
 </android.support.design.widget.CoordinatorLayout>
