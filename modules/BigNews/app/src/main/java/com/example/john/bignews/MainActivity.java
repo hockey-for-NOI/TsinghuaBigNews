@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 try
                 {
                     User.logout();
+                    refresh();
                 }
                 catch(Exception e){}
             }
@@ -97,8 +98,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    public void refreshUser()
+    public void refresh()
     {
         fabInfo.setLabelText(User.getUser().getName());
+        fabLogout.setEnabled(!User.isGuest());
+
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), this);
+        viewPager.setAdapter(adapter);
     }
 }

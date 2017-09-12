@@ -43,6 +43,9 @@ public class CategoryView extends AppCompatActivity {
                     User.setFavouriteCategories(list);
                 }
                 catch (Exception e){}
+
+                MainActivity.mainInstance.refresh();
+
                 finish();
             }
         });
