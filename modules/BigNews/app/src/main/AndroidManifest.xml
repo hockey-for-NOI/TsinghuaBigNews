@@ -7,12 +7,12 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name="com.example.john.bignews.MainApplication">
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="DATABASE"
             android:value="sugar_users.db" />
@@ -25,6 +25,7 @@
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="com.example.hq.usermanager" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,7 +41,8 @@
             android:name=".Login"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Register"></activity>
+        <activity android:name=".Register" />
+        <activity android:name=".CategoryView"></activity>
     </application>
 
 </manifest>
