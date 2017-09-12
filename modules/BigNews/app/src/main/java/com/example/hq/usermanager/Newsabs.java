@@ -8,7 +8,6 @@ import com.orm.dsl.Ignore;
 import org.json.*;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +22,7 @@ public class Newsabs extends SugarRecord {
     String title;
     String content;
     String newsid;
+    long time;
 
     public Newsabs() {
     }
@@ -36,6 +36,7 @@ public class Newsabs extends SugarRecord {
             this.title = obj.getString("news_Title");
             this.content = obj.getString("news_Intro");
             this.newsid = obj.getString("news_ID");
+            this.time = (new SimpleDateFormat("M d, y hh:mm:ss a")).parse(obj.getString("news_Time")).getTime();
         }
         catch (Exception e) {
             this.category = "";
@@ -76,7 +77,6 @@ public class Newsabs extends SugarRecord {
     public static   ArrayList<Newsabs> getCachedAbstractByCategory(String category) {
         List<Newsabs> lis = Newsabs.find(Newsabs.class, "category = ?", category);
         ArrayList<Newsabs> alis = new ArrayList<Newsabs>(lis);
-
         return alis;
     }
 
