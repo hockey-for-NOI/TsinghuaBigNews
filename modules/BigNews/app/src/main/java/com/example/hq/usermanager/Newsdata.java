@@ -35,7 +35,7 @@ public class Newsdata extends SugarRecord {
                     jobj.getString("news_Time") + "\n" +
                     "";
         }
-        catch (Exception e) {}
+        catch (Exception e) {this.display = "Waiting...";}
     }
 
     public  static  void    grab(String newsid) {
@@ -53,7 +53,7 @@ public class Newsdata extends SugarRecord {
 
     public  static  Newsdata    get(String newsid) {
         List<Newsdata> tmp = Newsdata.find(Newsdata.class, "newsid = ?", newsid);
-        if (tmp.size() > 0) return tmp.get(0); else return new Newsdata("", "\"news_Title\": \"404 Not Found\", \"news_Content\": \"Check your Internet connection and flush the page.\"}");
+        if (tmp.size() > 0) return tmp.get(0); else return new Newsdata("", "");
     }
 
     public  String  getDisplay() {return display;}

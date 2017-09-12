@@ -41,14 +41,12 @@ public class StoredUser extends SugarRecord {
 
     public static   void    finish()
     {
-        StoredUser.deleteAll(StoredUser.class);
-        stu.save();
     }
 
-    public static   void    rememberUsername() {stu.stored = User.getUser();}
-    public static   void    rememberPassword() {stu.stored = User.getUser(); stu.save_passwd = true;}
-    public static   void    forgetUsername() {stu.stored = guest; stu.save_passwd = true;}
-    public static   void    forgetPassword() {stu.save_passwd = false;}
+    public static   void    rememberUsername() {stu.stored = User.getUser(); stu.save();}
+    public static   void    rememberPassword() {stu.stored = User.getUser(); stu.save_passwd = true; stu.save();}
+    public static   void    forgetUsername() {stu.stored = guest; stu.save_passwd = true; stu.save();}
+    public static   void    forgetPassword() {stu.save_passwd = false; stu.save();}
 
     public static   String  cachedUsername() {return stu.stored.getName();}
     public static   boolean cachedPassword() {return stu.save_passwd;}

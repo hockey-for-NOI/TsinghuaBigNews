@@ -1,6 +1,7 @@
 package com.example.john.bignews;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,15 +14,36 @@ import com.example.hq.usermanager.Newsdata;
 public class Reader extends AppCompatActivity {
 
     private String str;
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reader);
-        Bundle bundle = this.getIntent().getExtras();
+        final Bundle bundle = this.getIntent().getExtras();
+        final TextView textView = (TextView) findViewById(R.id.ReaderText);
         str = Newsdata.get(bundle.getString("ID")).getDisplay();
-        TextView textView = (TextView) findViewById(R.id.ReaderText);
         textView.setText(str);
+
+        mHandler = new Handler();
+
+        final String idToGrab = bundle.getString("ID");
+        Thread t = new Thread() {
+            public void run() {
+                Newsdata.grab(idToGrab);
+                mHandler.post(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                str = Newsdata.get(bundle.getString("ID")).getDisplay();
+                                textView.setText(str);
+                            }
+                        }
+                );
+            }
+        };
+        t.start();
+
     }
 
 }

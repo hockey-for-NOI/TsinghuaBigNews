@@ -111,8 +111,8 @@ public class User extends SugarRecord {
     }
 
     public static   void    logout() throws UserNullException {
-        if (user == null) throw new UserNullException();
-        user = null;
+        if (user == StoredUser.getGuest()) throw new UserNullException();
+        user = StoredUser.getGuest();
         StoredUser.forgetUsername();
     }
 

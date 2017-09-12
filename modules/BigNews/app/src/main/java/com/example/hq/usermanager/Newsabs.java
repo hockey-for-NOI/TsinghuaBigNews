@@ -72,6 +72,7 @@ public class Newsabs extends SugarRecord {
     public static   ArrayList<Newsabs> getCachedAbstractByCategory(String category) {
         List<Newsabs> lis = Newsabs.find(Newsabs.class, "category = ?", category);
         ArrayList<Newsabs> alis = new ArrayList<Newsabs>(lis);
+
         return alis;
     }
 
