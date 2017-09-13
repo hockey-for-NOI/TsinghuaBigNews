@@ -95,6 +95,20 @@ public class Newsabs extends SugarRecord {
         return alis;
     }
 
+    public static   ArrayList<Newsabs> searchAbstractOffline(String keyword) {
+        List<Newsabs> lis = Newsabs.find(Newsabs.class, "jsonstr like ?", "%" + keyword + "%");
+        ArrayList<Newsabs> alis = new ArrayList<Newsabs>(lis);
+        Collections.sort(alis, new Comparator<Newsabs>() {
+            @Override
+            public int compare(Newsabs newsabs, Newsabs t1) {
+                if (newsabs.time > t1.time) return -1;
+                if (newsabs.time  == t1.time) return 0;
+                return 1;
+            }
+        });
+        return alis;
+    }
+
     public String getTitle() {return title;}
     public String getContent() {return content;}
     public String getNewsID() {return newsid;}
