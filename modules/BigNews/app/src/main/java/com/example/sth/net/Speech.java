@@ -49,7 +49,7 @@ public class Speech {
 
         SpeechSynthesizer mTts= SpeechSynthesizer.getSynthesizer();
         //3.开始合成
-        mTts.startSpeaking("科大讯飞，让世界聆听我们的声音", mSynListener);
+        mTts.startSpeaking(str, mSynListener);
     }
 
 
