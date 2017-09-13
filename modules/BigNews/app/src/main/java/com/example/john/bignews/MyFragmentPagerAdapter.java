@@ -43,14 +43,16 @@ class MyFragmentPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         return titles.get(position);
     }
-    public void setFragmens()
+
+    @Override
+    public int getItemPosition(Object object)
+    {
+        return POSITION_NONE;
+    }
+
+    public void setFragments()
     {
         titles = User.getFavouriteCategories();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        for (Fragment i : fragmentList) fragmentTransaction.remove(i);
-        fragmentTransaction.commit();
-        fragmentTransaction = null;
-        fragmentManager.executePendingTransactions();
         fragmentList.clear();
         for (String i : titles) fragmentList.add(PageFragment.newInstance(i));
         notifyDataSetChanged();

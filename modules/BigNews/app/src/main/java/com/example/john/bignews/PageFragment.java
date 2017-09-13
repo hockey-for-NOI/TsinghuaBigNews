@@ -44,20 +44,11 @@ public class PageFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_page, container, false);
 
-        SwipeRefreshLayout srl = (SwipeRefreshLayout) view.findViewById(R.id.srl);
-        srl.setProgressBackgroundColorSchemeResource(android.R.color.white);
-        srl.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
-        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-
-            }
-        });
-
         ListView listView = (ListView) view.findViewById(R.id.listView);
         listItems = Newsabs.getCachedAbstractByCategory(pageCategory);
         listView.setAdapter(new ListAdapter(view.getContext(), listItems));
         listView.setOnItemClickListener(new ClickEvent());
+
         return view;
     }
 

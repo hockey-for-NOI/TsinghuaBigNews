@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         adapter.setFragmens();
+        viewPager.invalidate();
         viewPager.setAdapter(adapter);
     }
 }
