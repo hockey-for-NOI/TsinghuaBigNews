@@ -17,18 +17,18 @@ public class ViewedNews extends SugarRecord {
         this.data = data;
     }
 
-    public   static void    save(User u, Newsabs data) {
+    public   static void    view(User u, Newsabs data) {
         (new ViewedNews(u, data)).save();
     }
 
-    public  static  boolean exist(User u, Newsabs data) {
+    public  static  boolean viewed(User u, Newsabs data) {
         List<ViewedNews> tmp = ViewedNews.find(ViewedNews.class, "owner = ? and data = ?", u.getId().toString(), data.getId().toString());
         return tmp.size() > 0;
     }
 
-    public  void    unsave(ViewedNews sn) {sn.delete();}
+    public  void    unview(ViewedNews sn) {sn.delete();}
 
-    public  static  void unsave(User u, Newsabs data) {
+    public  static  void unview(User u, Newsabs data) {
         List<ViewedNews> tmp = ViewedNews.find(ViewedNews.class, "owner = ? and data = ?", u.getId().toString(), data.getId().toString());
         for (ViewedNews i: tmp) i.delete();
     }
