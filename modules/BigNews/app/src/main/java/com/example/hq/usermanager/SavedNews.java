@@ -28,6 +28,11 @@ public class SavedNews extends SugarRecord {
 
     public  void    unsave(SavedNews sn) {sn.delete();}
 
+    public  static  void unsave(User u, Newsdata data) {
+        List<SavedNews> tmp = SavedNews.find(SavedNews.class, "owner = ? and data = ?", u.getId().toString(), data.getId().toString());
+        for (SavedNews i: tmp) i.delete();
+    }
+
     public  static  void clear(User u)
     {
         List<SavedNews> tmp = SavedNews.find(SavedNews.class, "owner = ?", u.getId().toString());
