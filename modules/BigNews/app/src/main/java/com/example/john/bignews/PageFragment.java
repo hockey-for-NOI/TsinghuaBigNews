@@ -127,7 +127,6 @@ public class PageFragment extends Fragment {
         LayoutInflater inflater;
         private ArrayList<Newsabs> listItem;
         Handler mHandler;
-        ImageView imageView;
 
         public ListAdapter(Context context, ArrayList<Newsabs> listItems)
         {
@@ -154,7 +153,7 @@ public class PageFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             view = inflater.inflate(R.layout.content_abstract_info, null);
             LinearLayout textPack = (LinearLayout)view.findViewById(R.id.text_pack);
-            imageView = (ImageView)view.findViewById(R.id.imageview);
+            ImageView imageView = (ImageView)view.findViewById(R.id.imageview);
 
             ViewGroup.LayoutParams para;
             para = textPack.getLayoutParams();
@@ -176,15 +175,16 @@ public class PageFragment extends Fragment {
             final String imgstr = listItem.get(position).getFirstPicture();
             if (imgstr != null)
             {
+                final ImageView tmpView = imageView;
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         final Drawable drawable = ImageLoader.loadImageFromNetwork(imgstr);
                         if (drawable != null)
-                        imageView.post(new Runnable() {
+                        tmpView.post(new Runnable() {
                             @Override
                             public void run() {
-                                imageView.setImageDrawable(drawable);
+                                tmpView.setImageDrawable(drawable);
                             }
                         });
                     }
