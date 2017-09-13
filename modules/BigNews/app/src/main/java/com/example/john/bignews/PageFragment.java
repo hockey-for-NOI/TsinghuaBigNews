@@ -3,6 +3,8 @@ package com.example.john.bignews;
 import com.example.hq.usermanager.*;
 import com.example.sth.net.Category;
 import com.example.sth.net.NewsParam;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +13,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +28,7 @@ public class PageFragment extends Fragment {
     private ArrayList<Newsabs> listItems;
     private FragmentManager fm;
     private FragmentTransaction ft;
-    SwipeRefreshLayout srl;
+    PullToRefreshListView prl;
     View view;
     Handler mHandler;
     ListView listView;
@@ -51,37 +54,65 @@ public class PageFragment extends Fragment {
         mHandler = new Handler();
         view = inflater.inflate(R.layout.fragment_page, container, false);
 
-        srl = (SwipeRefreshLayout) view.findViewById(R.id.srl);
-        srl.setProgressBackgroundColorSchemeResource(android.R.color.white);
-        srl.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
-        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        prl = (PullToRefreshListView) view.findViewById(R.id.pull_refresh_list);
+        prl.setMode(PullToRefreshBase.Mode.BOTH);
+        prl.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
             @Override
-            public void onRefresh() {
-                srl.setRefreshing(true);
-
-                new Thread(){
-                    @Override
-                    public  void    run() {
-                        Newsabs.grab(new NewsParam().setCategory(Category.getNum(pageCategory))
-                                .setPageNo(((listItems == null ? 0 : listItems.size()) + 519) / 500).setPageSize(500));
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                listItems = new ArrayList<Newsabs>(Newsabs.getCachedAbstractByCategory(pageCategory)
-                                        .subList(1, (listItems == null ? 0 : listItems.size()) + 20));
-                                listView.setAdapter(new ListAdapter(view.getContext(), listItems));
+            public void onRefresh(PullToRefreshBase <ListView> refreshView) {
+                if (refreshView.isFooterShown()) {
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            Newsabs.grab(new NewsParam().setCategory(Category.getNum(pageCategory))
+                                    .setPageNo(((listItems == null ? 0 : listItems.size()) + 519) / 500).setPageSize(500));
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ArrayList<Newsabs> tmpItems = new ArrayList<Newsabs>(Newsabs.getCachedAbstractByCategory(pageCategory));
+                                    int lf = (listItems == null ? 0 : listItems.size());
+                                    if (tmpItems.size() < lf) {
+                                        listItems.clear();
+                                        listItems.addAll(tmpItems);
+                                    }
+                                    else {
+                                        int ri = lf + 20;
+                                        if (tmpItems.size() < ri) ri = tmpItems.size();
+                                        tmpItems = new ArrayList<Newsabs>(tmpItems.subList(lf, ri));
+                                        listItems.addAll(tmpItems);
+                                    }
+                                    prl.onRefreshComplete();
+                                }
+                            });
                             }
-                        });
-                    }
-                }.start();
-
-                srl.setRefreshing(false);
+                    }.start();
+                }
+                else {
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            Newsabs.grab(new NewsParam().setCategory(Category.getNum(pageCategory))
+                                    .setPageNo(1).setPageSize(500));
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    listItems.clear();
+                                    ArrayList<Newsabs> tmpItems = new ArrayList<Newsabs>(Newsabs.getCachedAbstractByCategory(pageCategory));
+                                    if (tmpItems.size() > 20) tmpItems = new ArrayList<Newsabs>(tmpItems.subList(0, 20));
+                                    listItems.addAll(tmpItems);
+                                    prl.onRefreshComplete();
+                                }
+                            });
+                        }
+                    }.start();
+                }
             }
         });
 
-        listView = (ListView) view.findViewById(R.id.listView);
-        listItems = new ArrayList<Newsabs>(Newsabs.getCachedAbstractByCategory(pageCategory).subList(1,20));
-        listView.setAdapter(new ListAdapter(view.getContext(), listItems));
+        listView = prl.getRefreshableView();
+        ArrayList<Newsabs> tmpItems = new ArrayList<Newsabs>(Newsabs.getCachedAbstractByCategory(pageCategory));
+        if (tmpItems.size() > 20) tmpItems = new ArrayList<Newsabs>(tmpItems.subList(0, 20));
+        listItems = tmpItems;
+        prl.setAdapter(new ListAdapter(view.getContext(), listItems));
         listView.setOnItemClickListener(new ClickEvent());
         return view;
     }
