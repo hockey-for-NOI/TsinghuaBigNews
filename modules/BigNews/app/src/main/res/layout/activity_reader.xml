@@ -27,6 +27,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="25dip"
             />
+
             <TextView
                 android:id="@+id/ReaderContent"
                 android:layout_width="match_parent"
@@ -36,4 +37,19 @@
             />
         </LinearLayout>
     </ScrollView>
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/FavouriteNews"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:paddingRight="20px"
+        android:paddingBottom="20px"
+        android:paddingLeft="20px"
+
+        app:menu_colorNormal="@color/colorPrimary"
+        app:menu_colorPressed="@color/colorPrimaryDark"
+        app:menu_backgroundColor="#ffff"
+        />
+
 </android.support.design.widget.CoordinatorLayout>

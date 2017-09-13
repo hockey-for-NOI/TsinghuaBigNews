@@ -1,5 +1,6 @@
 package com.example.john.bignews;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -83,20 +84,21 @@ public class Reader extends AppCompatActivity {
                 @Override
                 public void run() {
                     final Drawable drawable = ImageLoader.loadImageFromNetwork(imgURL);
+                    final Bitmap bitmap = ImageLoader.getbitmap(imgURL);
                     imageView.post(new Runnable() {
                         @Override
                         public void run() {
 
-                            ViewGroup.LayoutParams para = imageView.getLayoutParams();
+/*                            ViewGroup.LayoutParams para = imageView.getLayoutParams();
                             para.width = drawable.getIntrinsicWidth();
                             para.height = drawable.getIntrinsicHeight();
                             para.height = MainActivity.static_width * para.height * 4 / 5 / para.width;
-                            para.width = MainActivity.static_width * 4 / 5;
+                            para.width = MainActivity.static_width * 4 / 5;*/
 
-                            titleView.setText(para.width + " " + para.height);
+//                            titleView.setText(imgURL);
 
-                            imageView.setImageDrawable(drawable);
-                            imageView.setLayoutParams(para);
+                            imageView.setImageBitmap(bitmap);
+//                            imageView.setLayoutParams(para);
                         }
                     });
                 }
