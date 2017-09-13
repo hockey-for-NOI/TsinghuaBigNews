@@ -70,6 +70,7 @@ public class Newsdata extends SugarRecord {
             JSONObject obj = new JSONObject(detail);
             Newsdata data = new Newsdata(newsid, detail);
             data.save();
+            Phrase.pourPhrase(data);
         }
         catch (Exception e) {
         }

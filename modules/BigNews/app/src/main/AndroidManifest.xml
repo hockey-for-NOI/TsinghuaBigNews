@@ -28,7 +28,7 @@
             android:value="sugar_users.db" />
         <meta-data
             android:name="VERSION"
-            android:value="50000" />
+            android:value="60000" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />

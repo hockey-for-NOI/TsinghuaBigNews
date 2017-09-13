@@ -1,5 +1,6 @@
 package com.example.john.bignews;
 
+import android.graphics.pdf.PdfDocument;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -53,6 +54,7 @@ class MyFragmentPagerAdapter extends FragmentPagerAdapter {
     public void setFragments()
     {
         titles = User.getFavouriteCategories();
+        titles.add(0, "推荐");
         fragmentList.clear();
         for (String i : titles) fragmentList.add(PageFragment.newInstance(i));
         notifyDataSetChanged();
