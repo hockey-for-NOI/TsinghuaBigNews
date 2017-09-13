@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,12 +19,15 @@ import android.widget.TextView;
 
 import com.example.hq.usermanager.Newsdata;
 import com.example.sth.net.ImageLoader;
+import com.google.common.reflect.Parameter;
 
 import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+
+import static java.lang.Math.floor;
 
 public class Reader extends AppCompatActivity {
 
@@ -33,6 +37,7 @@ public class Reader extends AppCompatActivity {
     private LinearLayout readerLayout;
     private TextView titleView, contentView;
     private String imgURL;
+    private boolean prepared;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,7 @@ public class Reader extends AppCompatActivity {
         readerLayout = (LinearLayout) findViewById(R.id.ReaderLayout);
         titleView = (TextView) findViewById(R.id.ReaderTitle);
         contentView = (TextView) findViewById(R.id.ReaderContent);
+        prepared = false;
         if (Newsdata.get(bundle.getString("ID")).isComplete()) prepare(); else titleView.setText("Waiting");
 
         mHandler = new Handler();
@@ -67,42 +73,41 @@ public class Reader extends AppCompatActivity {
 
     private void prepare()
     {
+        if (prepared) return;
+        prepared = true;
         Newsdata tmp = Newsdata.get(bundle.getString("ID"));
         titleView.setText(tmp.getTitle());
         contentView.setText(tmp.getContent());
         ArrayList<String> list = tmp.getPictures();
-        for (String pic : list)
+        for (String pic: list)
         {
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.content_reader_image, null);
-            final ImageView imageView = view.findViewById(R.id.ReaderImage);
+            ImageView imageView = view.findViewById(R.id.ReaderImage);
             imageView.setMaxWidth(MainActivity.static_width);
             imageView.setMaxHeight(MainActivity.static_height);
             readerLayout.addView(view);
             imgURL = pic;
-            new Thread(new Runnable() {
+
+            new Thread() {
+                ImageView t;
+
+                public Thread set(ImageView t) {
+                    this.t = t;
+                    return this;
+                }
+
                 @Override
                 public void run() {
-                    final Drawable drawable = ImageLoader.loadImageFromNetwork(imgURL);
                     final Bitmap bitmap = ImageLoader.getbitmap(imgURL);
-                    imageView.post(new Runnable() {
+                    t.post(new Runnable() {
                         @Override
                         public void run() {
-
-/*                            ViewGroup.LayoutParams para = imageView.getLayoutParams();
-                            para.width = drawable.getIntrinsicWidth();
-                            para.height = drawable.getIntrinsicHeight();
-                            para.height = MainActivity.static_width * para.height * 4 / 5 / para.width;
-                            para.width = MainActivity.static_width * 4 / 5;*/
-
-//                            titleView.setText(imgURL);
-
-                            imageView.setImageBitmap(bitmap);
-//                            imageView.setLayoutParams(para);
+                            t.setImageBitmap(bitmap);
                         }
                     });
                 }
-            }).start();
+            }.set(imageView).start();
         }
     }
 }

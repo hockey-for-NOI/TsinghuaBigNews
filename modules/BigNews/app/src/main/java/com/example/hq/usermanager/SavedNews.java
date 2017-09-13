@@ -21,6 +21,11 @@ public class SavedNews extends SugarRecord {
         (new SavedNews(u, data)).save();
     }
 
+    public  static  boolean exist(User u, Newsdata data) {
+        List<SavedNews> tmp = SavedNews.find(SavedNews.class, "owner = ? and data = ?", u.getId().toString(), data.getId().toString());
+        return tmp.size() > 0;
+    }
+
     public  void    unsave(SavedNews sn) {sn.delete();}
 
     public  static  void clear(User u)

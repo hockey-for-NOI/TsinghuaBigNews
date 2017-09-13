@@ -29,14 +29,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         for (int i=1; i<=Category.getCategoryNumber(); i++) {
-            final int pid = i;
             new Thread() {
+                int t;
+                public Thread set(int t) {this.t = t; return this;}
                 @Override
                 public void run() {
-                    Newsabs.grab(new NewsParam().setCategory(pid)
+                    Newsabs.grab(new NewsParam().setCategory(t)
                             .setPageNo(1).setPageSize(20));
                 }
-            }.start();
+            }.set(i).start();
         }
 
         setContentView(R.layout.activity_main);
