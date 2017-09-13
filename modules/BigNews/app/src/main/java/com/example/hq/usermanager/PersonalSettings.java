@@ -13,11 +13,13 @@ import java.util.ArrayList;
  */
 
 public class PersonalSettings {
-    ArrayList<String> favouriteCategories;
+    public ArrayList<String> favouriteCategories;
+    public ArrayList<String> stopList;
 
     private void setDefault()
     {
         favouriteCategories = Category.getAllNames();
+        stopList = new ArrayList<String>();
     }
 
     public PersonalSettings() {
@@ -32,6 +34,11 @@ public class PersonalSettings {
             favouriteCategories = new ArrayList<String>();
             favouriteCategories.clear();
             for (int i=0; i<jarr.length(); i++) favouriteCategories.add(jarr.getString(i));
+
+            jarr = jobj.getJSONArray("stopList");
+            stopList = new ArrayList<String>();
+            stopList.clear();
+            for (int i=0; i<jarr.length(); i++) stopList.add(jarr.getString(i));
         }
         catch (JSONException e) {
             setDefault();
@@ -45,12 +52,14 @@ public class PersonalSettings {
         try {
             JSONArray jfc = new JSONArray(favouriteCategories);
             jobj.put("favouriteCategories", jfc);
+            JSONArray jsl = new JSONArray(stopList);
+            jobj.put("stopList", jsl);
         }
         catch (JSONException e) {}
 
         return jobj.toString();
     }
 
-    public ArrayList<String> getFavouriteCategories() {return favouriteCategories;}
     public PersonalSettings setFavouriteCategories(ArrayList<String> c) {favouriteCategories = c; return this;}
+    public PersonalSettings setStopList(ArrayList<String> s) {stopList = s; return this;}
 }

@@ -41,12 +41,23 @@ public class User extends SugarRecord {
 
     public  static  ArrayList<String> getFavouriteCategories() {
         if (isGuest()) return Category.getAllNames();
-        return user.getPersonalSettings().getFavouriteCategories();
+        return user.getPersonalSettings().favouriteCategories;
     }
 
     public  static  void    setFavouriteCategories(ArrayList<String> fc) throws UserNullException {
         if (isGuest()) throw new UserNullException();
         user.personal_settings = user.getPersonalSettings().setFavouriteCategories(fc).toString();
+        user.save();
+    }
+
+    public static   ArrayList<String> getStopList() {
+        if (isGuest()) return new ArrayList<String>();
+        return user.getPersonalSettings().stopList;
+    }
+
+    public  static  void    setStopList(ArrayList<String> fc){
+        if (isGuest()) return;
+        user.personal_settings = user.getPersonalSettings().setStopList(fc).toString();
         user.save();
     }
 

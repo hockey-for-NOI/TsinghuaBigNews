@@ -83,7 +83,13 @@ public class Newsabs extends SugarRecord {
 
     public static   ArrayList<Newsabs> getCachedAbstractByCategory(String category) {
         List<Newsabs> lis = Newsabs.find(Newsabs.class, "category = ?", category);
-        ArrayList<Newsabs> alis = new ArrayList<Newsabs>(lis);
+        ArrayList<Newsabs> alis = new ArrayList<Newsabs>();
+        for (Newsabs i: lis) {
+            boolean flag = true;
+            for (String t: User.getStopList())
+                if (i.jsonstr.contains(t)) flag = false;
+            if (flag) alis.add(i);
+        }
         Collections.sort(alis, new Comparator<Newsabs>() {
             @Override
             public int compare(Newsabs newsabs, Newsabs t1) {
