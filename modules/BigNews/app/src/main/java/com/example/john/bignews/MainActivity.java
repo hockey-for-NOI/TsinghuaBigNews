@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     public static MainActivity mainInstance;
     private FloatingActionButton fabInfo, fabLogin, fabLogout, fabRegister, fabCategory, fabFavourite;
     private Intent intentLogin, intentRegister, intentCategory;
+    private MyFragmentPagerAdapter adapter;
     public static int static_width, static_height;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
         static_height = getResources().getDisplayMetrics().heightPixels;
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), this);
+        adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), this);
+        adapter.setFragments();
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);

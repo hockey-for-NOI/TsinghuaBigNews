@@ -39,7 +39,7 @@ public class PageFragment extends Fragment {
         args.putString(ARGS_PAGE, category);
         PageFragment fragment = new PageFragment();
         fragment.setArguments(args);
-        return fragment;
+            return fragment;
     }
 
     @Override
@@ -115,6 +115,7 @@ public class PageFragment extends Fragment {
         listItems = tmpItems;
         prl.setAdapter(new ListAdapter(view.getContext(), listItems));
         listView.setOnItemClickListener(new ClickEvent());
+
         return view;
     }
 
