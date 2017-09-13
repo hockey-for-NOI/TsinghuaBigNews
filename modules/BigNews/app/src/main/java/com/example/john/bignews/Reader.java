@@ -8,12 +8,15 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.hq.usermanager.Newsdata;
+import com.example.sth.net.ImageLoader;
 
 import org.w3c.dom.Text;
 
@@ -46,6 +49,7 @@ public class Reader extends AppCompatActivity {
         Thread t = new Thread() {
             public void run() {
                 Newsdata.grab(idToGrab);
+                if (Newsdata.get(bundle.getString("ID")).isComplete())
                 mHandler.post(
                         new Runnable() {
                             @Override
@@ -60,24 +64,6 @@ public class Reader extends AppCompatActivity {
 
     }
 
-    private Drawable loadImageFromNetwork(String imageUrl)
-    {
-        Drawable drawable = null;
-        try {
-            drawable = Drawable.createFromStream(
-                    new URL(imageUrl).openStream(), "image.jpg");
-        } catch (IOException e) {
-            Log.d("test", e.getMessage());
-        }
-        if (drawable == null) {
-            Log.d("test", "null drawable");
-        } else {
-            Log.d("test", "not null drawable");
-        }
-
-        return drawable ;
-    }
-
     private void prepare()
     {
         Newsdata tmp = Newsdata.get(bundle.getString("ID"));
@@ -86,20 +72,31 @@ public class Reader extends AppCompatActivity {
         ArrayList<String> list = tmp.getPictures();
         for (String pic : list)
         {
-            final ImageView imageView = new ImageView(this);
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.content_reader_image, null);
+            final ImageView imageView = view.findViewById(R.id.ReaderImage);
             imageView.setMaxWidth(MainActivity.static_width);
             imageView.setMaxHeight(MainActivity.static_height);
-            readerLayout.addView(imageView);
+            readerLayout.addView(view);
             imgURL = pic;
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-
-                    final Drawable drawable = loadImageFromNetwork(imgURL);
+                    final Drawable drawable = ImageLoader.loadImageFromNetwork(imgURL);
                     imageView.post(new Runnable() {
                         @Override
                         public void run() {
+
+                            ViewGroup.LayoutParams para = imageView.getLayoutParams();
+                            para.width = drawable.getIntrinsicWidth();
+                            para.height = drawable.getIntrinsicHeight();
+                            para.height = MainActivity.static_width * para.height * 4 / 5 / para.width;
+                            para.width = MainActivity.static_width * 4 / 5;
+
+                            titleView.setText(para.width + " " + para.height);
+
                             imageView.setImageDrawable(drawable);
+                            imageView.setLayoutParams(para);
                         }
                     });
                 }
