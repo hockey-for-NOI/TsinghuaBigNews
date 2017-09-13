@@ -1,13 +1,19 @@
 package com.example.john.bignews;
 
 import com.example.hq.usermanager.*;
+import com.example.sth.net.Category;
+import com.example.sth.net.NewsParam;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +28,10 @@ public class PageFragment extends Fragment {
     private ArrayList<Newsabs> listItems;
     private FragmentManager fm;
     private FragmentTransaction ft;
+    PullToRefreshListView prl;
+    View view;
+    Handler mHandler;
+    ListView listView;
 
     public static PageFragment newInstance(String category) {
         Bundle args = new Bundle();
@@ -41,12 +51,68 @@ public class PageFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mHandler = new Handler();
+        view = inflater.inflate(R.layout.fragment_page, container, false);
 
-        View view = inflater.inflate(R.layout.fragment_page, container, false);
+        prl = (PullToRefreshListView) view.findViewById(R.id.pull_refresh_list);
+        prl.setMode(PullToRefreshBase.Mode.BOTH);
+        prl.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+            @Override
+            public void onRefresh(PullToRefreshBase <ListView> refreshView) {
+                if (refreshView.isFooterShown()) {
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            Newsabs.grab(new NewsParam().setCategory(Category.getNum(pageCategory))
+                                    .setPageNo(((listItems == null ? 0 : listItems.size()) + 519) / 500).setPageSize(500));
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ArrayList<Newsabs> tmpItems = new ArrayList<Newsabs>(Newsabs.getCachedAbstractByCategory(pageCategory));
+                                    int lf = (listItems == null ? 0 : listItems.size());
+                                    if (tmpItems.size() < lf) {
+                                        listItems.clear();
+                                        listItems.addAll(tmpItems);
+                                    }
+                                    else {
+                                        int ri = lf + 20;
+                                        if (tmpItems.size() < ri) ri = tmpItems.size();
+                                        tmpItems = new ArrayList<Newsabs>(tmpItems.subList(lf, ri));
+                                        listItems.addAll(tmpItems);
+                                    }
+                                    prl.onRefreshComplete();
+                                }
+                            });
+                            }
+                    }.start();
+                }
+                else {
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            Newsabs.grab(new NewsParam().setCategory(Category.getNum(pageCategory))
+                                    .setPageNo(1).setPageSize(500));
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    listItems.clear();
+                                    ArrayList<Newsabs> tmpItems = new ArrayList<Newsabs>(Newsabs.getCachedAbstractByCategory(pageCategory));
+                                    if (tmpItems.size() > 20) tmpItems = new ArrayList<Newsabs>(tmpItems.subList(0, 20));
+                                    listItems.addAll(tmpItems);
+                                    prl.onRefreshComplete();
+                                }
+                            });
+                        }
+                    }.start();
+                }
+            }
+        });
 
-        ListView listView = (ListView) view.findViewById(R.id.listView);
-        listItems = Newsabs.getCachedAbstractByCategory(pageCategory);
-        listView.setAdapter(new ListAdapter(view.getContext(), listItems));
+        listView = prl.getRefreshableView();
+        ArrayList<Newsabs> tmpItems = new ArrayList<Newsabs>(Newsabs.getCachedAbstractByCategory(pageCategory));
+        if (tmpItems.size() > 20) tmpItems = new ArrayList<Newsabs>(tmpItems.subList(0, 20));
+        listItems = tmpItems;
+        prl.setAdapter(new ListAdapter(view.getContext(), listItems));
         listView.setOnItemClickListener(new ClickEvent());
 
         return view;
@@ -79,7 +145,7 @@ public class PageFragment extends Fragment {
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
-            View view = inflater.inflate(R.layout.content_abstract_info, null);
+            view = inflater.inflate(R.layout.content_abstract_info, null);
             TextView textView = (TextView)view.findViewById(R.id.text_name);
             ImageView imageView = (ImageView)view.findViewById(R.id.imageview);
 

@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.example.hq.usermanager.Newsdata;
 
+import org.w3c.dom.Text;
+
 public class Reader extends AppCompatActivity {
 
     private String str;
@@ -35,8 +37,13 @@ public class Reader extends AppCompatActivity {
                         new Runnable() {
                             @Override
                             public void run() {
-                                str = Newsdata.get(bundle.getString("ID")).getDisplay();
-                                textView.setText(str);
+                                Newsdata tmp = Newsdata.get(bundle.getString("ID"));
+                                TextView title = (TextView)findViewById(R.id.ReaderTitle);
+                                title.setText(tmp.getTitle());
+                                TextView content = (TextView)findViewById(R.id.ReaderContent);
+                                title.setText(tmp.getContent());
+                                ArrayList<String> list = tmp.getImage();
+                                
                             }
                         }
                 );

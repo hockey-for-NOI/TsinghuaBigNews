@@ -4,11 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="30px"
+    android:layout_marginRight="30px"
+    android:layout_marginTop="30px"
+    android:background="#FFFF"
     tools:context="com.example.john.bignews.Reader">
 
-    <TextView
-        android:id="@+id/ReaderText"
-        android:layout_width="wrap_content"
+    <ScrollView
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_width="match_parent">
+        <TextView
+            android:id="@+id/ReaderTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25dip"
+            android:text="TextView"
+            />
+        <TextView
+            android:id="@+id/ReaderContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20px"
+            android:textSize="19dip"
+            android:text="TextView"
+            />
+    </ScrollView>
 </android.support.design.widget.CoordinatorLayout>

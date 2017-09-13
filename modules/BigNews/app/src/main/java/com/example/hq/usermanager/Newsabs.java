@@ -10,6 +10,8 @@ import org.json.*;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -36,15 +38,18 @@ public class Newsabs extends SugarRecord {
             this.title = obj.getString("news_Title");
             this.content = obj.getString("news_Intro");
             this.newsid = obj.getString("news_ID");
-            this.time = (new SimpleDateFormat("M d, y hh:mm:ss a")).parse(obj.getString("news_Time")).getTime();
+            this.time = (new SimpleDateFormat("yyyyMMddHHmmss")).parse(obj.getString("news_Time")).getTime();
         }
         catch (Exception e) {
             this.category = "";
             this.title = "";
             this.content = "";
             this.newsid = "";
+            this.time = 0;
         }
     }
+
+    public  long    getTime() {return time;}
 
     public static ArrayList<Newsabs> grab(NewsParam params){
         String grabRes = "";
@@ -69,7 +74,6 @@ public class Newsabs extends SugarRecord {
             result = new ArrayList<Newsabs>();
         }
         finally {
-            for (Newsabs i: result) i.save();
             return result;
         }
     }
@@ -77,6 +81,14 @@ public class Newsabs extends SugarRecord {
     public static   ArrayList<Newsabs> getCachedAbstractByCategory(String category) {
         List<Newsabs> lis = Newsabs.find(Newsabs.class, "category = ?", category);
         ArrayList<Newsabs> alis = new ArrayList<Newsabs>(lis);
+        Collections.sort(alis, new Comparator<Newsabs>() {
+            @Override
+            public int compare(Newsabs newsabs, Newsabs t1) {
+                if (newsabs.time > t1.time) return -1;
+                if (newsabs.time  == t1.time) return 0;
+                return 1;
+            }
+        });
         return alis;
     }
 

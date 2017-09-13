@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout
+<com.handmark.pulltorefresh.library.PullToRefreshListView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/srl"
+    android:id="@+id/pull_refresh_list"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</android.support.v4.widget.SwipeRefreshLayout>
+    android:layout_height="match_parent" >
+</com.handmark.pulltorefresh.library.PullToRefreshListView>

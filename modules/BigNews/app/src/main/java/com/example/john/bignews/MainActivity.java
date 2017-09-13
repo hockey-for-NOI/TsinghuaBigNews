@@ -6,12 +6,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.ListView;
 
 import com.example.hq.usermanager.Newsabs;
 import com.example.hq.usermanager.User;
 import com.example.sth.net.Category;
 import com.github.clans.fab.FloatingActionButton;
 import com.example.sth.net.NewsParam;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,25 +28,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        news_grabber = new Thread[Category.getCategoryNumber()];
-        for (int tid = 1; tid <= Category.getCategoryNumber(); tid++){
-            final int tmp = tid;
-            Thread t = new Thread() {
+        for (int i=1; i<=Category.getCategoryNumber(); i++) {
+            final int pid = i;
+            new Thread() {
+                @Override
                 public void run() {
-                    while (true)
-                    {
-                        for (int page=1; page<=500; page++) {
-                            Newsabs.grab(new NewsParam().setCategory(tmp));
-                            Newsabs.grab(new NewsParam().setCategory(tmp).setPageNo(page).setPageSize(500));
-                            try {
-                                sleep(100);
-                            } catch (Exception e) {}
-                        }
-                    }
+                    Newsabs.grab(new NewsParam().setCategory(pid)
+                            .setPageNo(1).setPageSize(20));
                 }
-            };
-            news_grabber[tid - 1] = t;
-            t.start();
+            }.start();
         }
 
         setContentView(R.layout.activity_main);
@@ -54,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), this);
-        adapter.setFragmens();
+        adapter.setFragments();
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
@@ -102,12 +95,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void refresh()
     {
-        fabInfo.setLabelText(User.getUser().getName());
-        fabLogout.setEnabled(!User.isGuest());
-
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        adapter.setFragmens();
-        viewPager.invalidate();
-        viewPager.setAdapter(adapter);
+        startActivity(new Intent(MainActivity.this,MainActivity.class));
+        finish();
     }
 }
