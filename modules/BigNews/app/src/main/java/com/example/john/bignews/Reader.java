@@ -44,6 +44,7 @@ public class Reader extends AppCompatActivity {
         Thread t = new Thread() {
             public void run() {
                 Newsdata.grab(idToGrab);
+                if (Newsdata.get(bundle.getString("ID")).isComplete())
                 mHandler.post(
                         new Runnable() {
                             @Override
