@@ -1,6 +1,7 @@
 package com.example.hq.usermanager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.example.sth.net.NewsAPI;
@@ -16,8 +17,25 @@ import org.json.JSONObject;
 public class Newsdata extends SugarRecord {
     String newsid;
     String jsonstr;
-    String display;
+    String category;
+    String title;
+    String content;
+    String pictures;
+    String source;
+    String journal;
+    String author;
+    String time;
+    boolean complete;
 
+    public String   getTitle() {return title;}
+    public String   getCategory() {return category;}
+    public String   getContent() {return content;}
+    public String   getSource() {return source;}
+    public String   getJournal() {return journal;}
+    public String   getAuthor() {return author;}
+    public String   getTime() {return time;}
+    public ArrayList<String> getPictures() {return new ArrayList<String>(Arrays.asList(pictures.split(";")));}
+    public boolean  isComplete() {return complete;}
     public String   getNewsID() {return newsid;}
 
     public Newsdata() {}
@@ -27,21 +45,24 @@ public class Newsdata extends SugarRecord {
         this.jsonstr = jsonstr;
         try {
             JSONObject jobj = new JSONObject(jsonstr);
-            this.display = jobj.getString("news_Category") + "\n" +
-                    jobj.getString("news_Title") + "\n" +
-                    jobj.getString("news_Content") + "\n" +
-                    jobj.getString("news_Pictures") + "\n" +
-                    jobj.getString("news_Journal") + "\n" +
-                    jobj.getString("news_Time") + "\n" +
-                    "";
+            this.category = jobj.getString("news_Category");
+            this.title = jobj.getString("news_Title");
+            this.content = jobj.getString("news_Content");
+            this.pictures = jobj.getString("news_Pictures");
+            this.journal = jobj.getString("news_Journal");
+            this.time = jobj.getString("news_Time");
+            this.source = jobj.getString("news_Source");
+            this.author = jobj.getString("news_Author");
+            this.complete = false;
         }
-        catch (Exception e) {this.display = "Waiting...";}
+        catch (Exception e) {this.complete = false;}
     }
 
     public  static  void    grab(String newsid) {
         List<Newsdata> tmp = Newsdata.find(Newsdata.class, "newsid = ?", newsid);
-        if (tmp.size() > 0) return;
+        if (tmp.size() > 0 && tmp.get(0).complete) return;
         try {
+            for (Newsdata i: tmp) i.delete();
             String detail = NewsAPI.getNews(new NewsParam().setID(newsid));
             JSONObject obj = new JSONObject(detail);
             Newsdata data = new Newsdata(newsid, detail);
@@ -56,5 +77,4 @@ public class Newsdata extends SugarRecord {
         if (tmp.size() > 0) return tmp.get(0); else return new Newsdata("", "");
     }
 
-    public  String  getDisplay() {return display;}
 }
