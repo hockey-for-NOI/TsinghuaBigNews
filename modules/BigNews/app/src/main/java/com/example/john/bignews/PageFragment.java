@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.TextViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,11 +122,13 @@ public class PageFragment extends Fragment {
     {
         LayoutInflater inflater;
         private ArrayList<Newsabs> listItem;
+        Handler mHandler;
 
         public ListAdapter(Context context, ArrayList<Newsabs> listItems)
         {
             inflater = LayoutInflater.from(context);
             this.listItem = listItems;
+            mHandler = new Handler();
         }
 
         public int getCount(){
@@ -145,22 +148,41 @@ public class PageFragment extends Fragment {
 
         public View getView(int position, View convertView, ViewGroup parent) {
             view = inflater.inflate(R.layout.content_abstract_info, null);
-            TextView textView = (TextView)view.findViewById(R.id.text_name);
+            LinearLayout textPack = (LinearLayout)view.findViewById(R.id.text_pack);
             ImageView imageView = (ImageView)view.findViewById(R.id.imageview);
 
             ViewGroup.LayoutParams para;
+            para = textPack.getLayoutParams();
+            para.width = MainActivity.static_width - MainActivity.static_width / 5 - 60;
+            textPack.setLayoutParams(para);
+
+            TextView    textView = (TextView)textPack.findViewById(R.id.text_name);
+            textView.setText(listItem.get(position).getTitle());
+            TextView    absView = (TextView)textPack.findViewById(R.id.text_abs);
+            absView.setText(listItem.get(position).getContent());
+
             para = imageView.getLayoutParams();
             para.height = MainActivity.static_width/5;
             para.width = MainActivity.static_width/5;
-
-
-            textView.setText(listItem.get(position).getAbs());
-
-            textView.setWidth(MainActivity.static_width - para.width - 60);
-
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setLayoutParams(para);
             imageView.setImageResource(R.drawable.z0);
+
+            String imgstr = listItem.get(position).getFirstPicture();
+            if (imgstr != null)
+            {
+                new Thread() {
+                    @Override
+                    public void run(){
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+
+                            }
+                        });
+                    }
+                }.start();
+            }
 
             return view;
         }

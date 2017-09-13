@@ -22,7 +22,7 @@ public class Reader extends AppCompatActivity {
         setContentView(R.layout.activity_reader);
         final Bundle bundle = this.getIntent().getExtras();
         final TextView textView = (TextView) findViewById(R.id.ReaderText);
-        str = Newsdata.get(bundle.getString("ID")).getDisplay();
+        str = Newsdata.get(bundle.getString("ID")).getContent();
         textView.setText(str);
 
         mHandler = new Handler();
@@ -35,7 +35,7 @@ public class Reader extends AppCompatActivity {
                         new Runnable() {
                             @Override
                             public void run() {
-                                str = Newsdata.get(bundle.getString("ID")).getDisplay();
+                                str = Newsdata.get(bundle.getString("ID")).getContent();
                                 textView.setText(str);
                             }
                         }

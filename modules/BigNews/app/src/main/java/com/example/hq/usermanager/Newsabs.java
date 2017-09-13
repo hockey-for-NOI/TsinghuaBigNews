@@ -24,6 +24,7 @@ public class Newsabs extends SugarRecord {
     String title;
     String content;
     String newsid;
+    String pictures;
     long time;
 
     public Newsabs() {
@@ -95,6 +96,5 @@ public class Newsabs extends SugarRecord {
     public String getTitle() {return title;}
     public String getContent() {return content;}
     public String getNewsID() {return newsid;}
-
-    public String getAbs() {return title + ":" + content;}
+    public String getFirstPicture() {return pictures.length() > 0 ? pictures.split(";")[0] : null;}
 }

@@ -34,7 +34,7 @@ public class Newsdata extends SugarRecord {
     public String   getJournal() {return journal;}
     public String   getAuthor() {return author;}
     public String   getTime() {return time;}
-    public ArrayList<String> getPictures() {return new ArrayList<String>(Arrays.asList(pictures.split(";")));}
+    public ArrayList<String> getPictures() {return pictures.length() > 0 ? new ArrayList<String>(Arrays.asList(pictures.split(";"))) : new ArrayList<String>();}
     public boolean  isComplete() {return complete;}
     public String   getNewsID() {return newsid;}
 
@@ -53,7 +53,7 @@ public class Newsdata extends SugarRecord {
             this.time = jobj.getString("news_Time");
             this.source = jobj.getString("news_Source");
             this.author = jobj.getString("news_Author");
-            this.complete = false;
+            this.complete = true;
         }
         catch (Exception e) {this.complete = false;}
     }
