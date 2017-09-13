@@ -13,6 +13,7 @@
         android:layout_marginLeft="30px"
         android:layout_marginRight="30px"
         android:layout_marginTop="30px"
+        android:layout_marginBottom="50px"
         >
         <LinearLayout
             android:id="@+id/ReaderLayout"
@@ -44,7 +45,6 @@
         android:layout_gravity="bottom|right"
         android:paddingRight="20px"
         android:paddingBottom="20px"
-        android:paddingLeft="20px"
         app:fab_colorNormal="@color/colorPrimary"
         app:fab_colorPressed="@color/colorPrimaryDark"
         />

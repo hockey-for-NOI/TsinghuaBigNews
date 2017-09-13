@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.hq.usermanager.Newsdata;
+import com.example.hq.usermanager.SavedNews;
+import com.example.hq.usermanager.User;
 import com.example.sth.net.ImageLoader;
+import com.github.clans.fab.FloatingActionButton;
 import com.google.common.reflect.Parameter;
 
 import org.w3c.dom.Text;
@@ -38,6 +40,9 @@ public class Reader extends AppCompatActivity {
     private TextView titleView, contentView;
     private String imgURL;
     private boolean prepared;
+    private FloatingActionButton fab;
+    private Newsdata tmp;
+    private boolean favourited;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +52,9 @@ public class Reader extends AppCompatActivity {
         readerLayout = (LinearLayout) findViewById(R.id.ReaderLayout);
         titleView = (TextView) findViewById(R.id.ReaderTitle);
         contentView = (TextView) findViewById(R.id.ReaderContent);
+        fab = (FloatingActionButton) findViewById(R.id.FavouriteNews);
         prepared = false;
-        if (Newsdata.get(bundle.getString("ID")).isComplete()) prepare(); else titleView.setText("Waiting");
+        if (Newsdata.get(bundle.getString("ID")).isComplete()) prepare(); else{titleView.setText("Waiting"); fab.setEnabled(false);}
 
         mHandler = new Handler();
 
@@ -68,16 +74,35 @@ public class Reader extends AppCompatActivity {
             }
         };
         t.start();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                if (favourited)
+//                if (SavedNews.exist(User.getUser(), tmp))
+                {
+                    fab.setImageResource(android.R.drawable.star_big_off);
+                    favourited = false;
+                }
+                else
+                {
+                    fab.setImageResource(android.R.drawable.star_big_on);
+                    favourited = true;
+                }
+            }
+        });
     }
 
     private void prepare()
     {
         if (prepared) return;
         prepared = true;
-        Newsdata tmp = Newsdata.get(bundle.getString("ID"));
+        tmp = Newsdata.get(bundle.getString("ID"));
         titleView.setText(tmp.getTitle());
         contentView.setText(tmp.getContent());
+        fab.setEnabled(true);
+        if (SavedNews.exist(User.getUser(), tmp)) fab.setImageResource(android.R.drawable.star_big_off);
+        fab.setImageResource(android.R.drawable.star_big_on);
         ArrayList<String> list = tmp.getPictures();
         for (String pic: list)
         {
