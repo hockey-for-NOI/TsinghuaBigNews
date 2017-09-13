@@ -41,15 +41,12 @@
         android:id="@+id/FavouriteNews"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|right"
         android:paddingRight="20px"
         android:paddingBottom="20px"
         android:paddingLeft="20px"
-
-        app:menu_colorNormal="@color/colorPrimary"
-        app:menu_colorPressed="@color/colorPrimaryDark"
-        app:menu_backgroundColor="#ffff"
+        app:fab_colorNormal="@color/colorPrimary"
+        app:fab_colorPressed="@color/colorPrimaryDark"
         />
 
 </android.support.design.widget.CoordinatorLayout>
