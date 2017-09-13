@@ -71,7 +71,7 @@ public class Reader extends AppCompatActivity {
     {
         for (int i=0; i<readerLayout.getChildCount(); i++)
             if (readerLayout.getChildAt(i) instanceof ImageView)
-                readerLayout.removeView(readerLayout.getChildAt(i));
+                readerLayout.removeView(readerLayout.getChildAt(i--));
         Newsdata tmp = Newsdata.get(bundle.getString("ID"));
         titleView.setText(tmp.getTitle());
         contentView.setText(tmp.getContent());
