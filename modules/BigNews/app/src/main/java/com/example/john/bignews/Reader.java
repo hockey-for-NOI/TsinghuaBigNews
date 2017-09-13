@@ -71,6 +71,8 @@ public class Reader extends AppCompatActivity {
         for (String pic : list)
         {
             final ImageView imageView = new ImageView(this);
+            imageView.setMaxWidth(MainActivity.static_width);
+            imageView.setMaxHeight(MainActivity.static_height);
             readerLayout.addView(imageView);
             imgURL = pic;
             new Thread(new Runnable() {
