@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="30px"
-    android:layout_marginRight="30px"
-    android:layout_marginTop="30px"
-    android:background="#FFFF"
-    tools:context="com.example.john.bignews.Reader">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFF"
+        tools:context="com.example.john.bignews.Reader">
 
-    <ScrollView
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="30px"
+        android:layout_marginRight="30px"
+        android:layout_marginTop="30px"
+        android:orientation="horizontal"
+        >
+
         <TextView
             android:id="@+id/ReaderTitle"
             android:layout_width="match_parent"
@@ -20,13 +23,17 @@
             android:textSize="25dip"
             android:text="TextView"
             />
-        <TextView
-            android:id="@+id/ReaderContent"
-            android:layout_width="match_parent"
+        <ScrollView
             android:layout_height="wrap_content"
-            android:layout_marginTop="20px"
-            android:textSize="19dip"
-            android:text="TextView"
-            />
-    </ScrollView>
+            android:layout_width="match_parent">
+            <TextView
+                android:id="@+id/ReaderContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20px"
+                android:textSize="19dip"
+                android:text="TextView"
+                />
+        </ScrollView>
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
