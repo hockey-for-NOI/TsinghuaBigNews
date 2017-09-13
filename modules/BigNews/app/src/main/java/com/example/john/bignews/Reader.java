@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.hq.usermanager.Newsdata;
+import com.example.sth.net.ImageLoader;
 
 import org.w3c.dom.Text;
 
@@ -57,24 +58,6 @@ public class Reader extends AppCompatActivity {
 
     }
 
-    private Drawable loadImageFromNetwork(String imageUrl)
-    {
-        Drawable drawable = null;
-        try {
-            drawable = Drawable.createFromStream(
-                    new URL(imageUrl).openStream(), "image.jpg");
-        } catch (IOException e) {
-            Log.d("test", e.getMessage());
-        }
-        if (drawable == null) {
-            Log.d("test", "null drawable");
-        } else {
-            Log.d("test", "not null drawable");
-        }
-
-        return drawable ;
-    }
-
     private void prepare()
     {
         Newsdata tmp = Newsdata.get(bundle.getString("ID"));
@@ -90,7 +73,7 @@ public class Reader extends AppCompatActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    final Drawable drawable = loadImageFromNetwork(imgURL);
+                    final Drawable drawable = ImageLoader.loadImageFromNetwork(imgURL);
                     imageView.post(new Runnable() {
                         @Override
                         public void run() {

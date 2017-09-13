@@ -2,12 +2,15 @@ package com.example.john.bignews;
 
 import com.example.hq.usermanager.*;
 import com.example.sth.net.Category;
+import com.example.sth.net.ImageLoader;
 import com.example.sth.net.NewsParam;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -124,6 +127,7 @@ public class PageFragment extends Fragment {
         LayoutInflater inflater;
         private ArrayList<Newsabs> listItem;
         Handler mHandler;
+        ImageView imageView;
 
         public ListAdapter(Context context, ArrayList<Newsabs> listItems)
         {
@@ -150,7 +154,7 @@ public class PageFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             view = inflater.inflate(R.layout.content_abstract_info, null);
             LinearLayout textPack = (LinearLayout)view.findViewById(R.id.text_pack);
-            ImageView imageView = (ImageView)view.findViewById(R.id.imageview);
+            imageView = (ImageView)view.findViewById(R.id.imageview);
 
             ViewGroup.LayoutParams para;
             para = textPack.getLayoutParams();
@@ -169,20 +173,22 @@ public class PageFragment extends Fragment {
             imageView.setLayoutParams(para);
             imageView.setImageResource(R.drawable.z0);
 
-            String imgstr = listItem.get(position).getFirstPicture();
+            final String imgstr = listItem.get(position).getFirstPicture();
             if (imgstr != null)
             {
-                new Thread() {
+                new Thread(new Runnable() {
                     @Override
-                    public void run(){
-                        mHandler.post(new Runnable() {
+                    public void run() {
+                        final Drawable drawable = ImageLoader.loadImageFromNetwork(imgstr);
+                        if (drawable != null)
+                        imageView.post(new Runnable() {
                             @Override
                             public void run() {
-
+                                imageView.setImageDrawable(drawable);
                             }
                         });
                     }
-                }.start();
+                }).start();
             }
 
             return view;
