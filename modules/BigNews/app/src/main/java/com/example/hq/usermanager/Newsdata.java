@@ -34,7 +34,10 @@ public class Newsdata extends SugarRecord {
     public String   getJournal() {return journal;}
     public String   getAuthor() {return author;}
     public String   getTime() {return time;}
-    public ArrayList<String> getPictures() {return pictures.length() > 0 ? new ArrayList<String>(Arrays.asList(pictures.split(";"))) : new ArrayList<String>();}
+    public ArrayList<String> getPictures() {
+        return pictures.length() > 0 ? new ArrayList<String>(
+                Arrays.asList(pictures.split(";"))) : new ArrayList<String>();
+    }
     public boolean  isComplete() {return complete;}
     public String   getNewsID() {return newsid;}
 

@@ -40,12 +40,14 @@ public class Newsabs extends SugarRecord {
             this.content = obj.getString("news_Intro");
             this.newsid = obj.getString("news_ID");
             this.time = (new SimpleDateFormat("yyyyMMddHHmmss")).parse(obj.getString("news_Time")).getTime();
+            this.pictures = obj.getString("news_Pictures");
         }
         catch (Exception e) {
             this.category = "";
             this.title = "";
             this.content = "";
             this.newsid = "";
+            this.pictures = "";
             this.time = 0;
         }
     }
@@ -96,5 +98,7 @@ public class Newsabs extends SugarRecord {
     public String getTitle() {return title;}
     public String getContent() {return content;}
     public String getNewsID() {return newsid;}
-    public String getFirstPicture() {return pictures.length() > 0 ? pictures.split(";")[0] : null;}
+    public String getFirstPicture() {
+        return pictures.length() > 0 ? pictures.split(";")[0] : null;
+    }
 }

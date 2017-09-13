@@ -88,9 +88,9 @@ public class Reader extends AppCompatActivity {
             final ImageView imageView = new ImageView(this);
             imgURL = pic;
             new Thread(new Runnable() {
-                Drawable drawable = loadImageFromNetwork(imgURL);
                 @Override
                 public void run() {
+                    final Drawable drawable = loadImageFromNetwork(imgURL);
                     imageView.post(new Runnable() {
                         @Override
                         public void run() {
