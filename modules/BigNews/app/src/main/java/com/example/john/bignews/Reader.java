@@ -1,5 +1,6 @@
 package com.example.john.bignews;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -35,6 +37,7 @@ public class Reader extends AppCompatActivity {
     private LinearLayout readerLayout;
     private TextView titleView, contentView;
     private String imgURL;
+    private boolean prepared;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,7 @@ public class Reader extends AppCompatActivity {
         readerLayout = (LinearLayout) findViewById(R.id.ReaderLayout);
         titleView = (TextView) findViewById(R.id.ReaderTitle);
         contentView = (TextView) findViewById(R.id.ReaderContent);
+        prepared = false;
         if (Newsdata.get(bundle.getString("ID")).isComplete()) prepare(); else titleView.setText("Waiting");
 
         mHandler = new Handler();
@@ -69,18 +73,20 @@ public class Reader extends AppCompatActivity {
 
     private void prepare()
     {
-        for (int i=0; i<readerLayout.getChildCount(); i++)
-            if (readerLayout.getChildAt(i) instanceof ImageView)
-                readerLayout.removeView(readerLayout.getChildAt(i--));
+        if (prepared) return;
+        prepared = true;
         Newsdata tmp = Newsdata.get(bundle.getString("ID"));
         titleView.setText(tmp.getTitle());
         contentView.setText(tmp.getContent());
         ArrayList<String> list = tmp.getPictures();
-        for (int pid=0; pid<list.size(); pid++)
+        for (String pic: list)
         {
-            String pic = list.get(pid);
-            ImageView imageView = new ImageView(this);
-            readerLayout.addView(imageView);
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.content_reader_image, null);
+            ImageView imageView = view.findViewById(R.id.ReaderImage);
+            imageView.setMaxWidth(MainActivity.static_width);
+            imageView.setMaxHeight(MainActivity.static_height);
+            readerLayout.addView(view);
             imgURL = pic;
 
             new Thread() {
@@ -93,13 +99,11 @@ public class Reader extends AppCompatActivity {
 
                 @Override
                 public void run() {
-                    final Drawable drawable = ImageLoader.loadImageFromNetwork(imgURL);
+                    final Bitmap bitmap = ImageLoader.getbitmap(imgURL);
                     t.post(new Runnable() {
                         @Override
                         public void run() {
-                            t.setImageDrawable(drawable);
-                            t.setLayoutParams(new LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                            t.setImageBitmap(bitmap);
                         }
                     });
                 }
