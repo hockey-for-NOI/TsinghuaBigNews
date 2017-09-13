@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.hq.usermanager.Newsdata;
@@ -25,6 +26,7 @@ public class Reader extends AppCompatActivity {
     private Bundle bundle;
     private String str;
     private Handler mHandler;
+    private LinearLayout readerLayout;
     private TextView titleView, contentView;
     private String imgURL;
 
@@ -33,6 +35,7 @@ public class Reader extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reader);
         bundle = this.getIntent().getExtras();
+        readerLayout = (LinearLayout) findViewById(R.id.ReaderLayout);
         titleView = (TextView) findViewById(R.id.ReaderTitle);
         contentView = (TextView) findViewById(R.id.ReaderContent);
         if (Newsdata.get(bundle.getString("ID")).isComplete()) prepare(); else titleView.setText("Waiting");
@@ -78,14 +81,13 @@ public class Reader extends AppCompatActivity {
     private void prepare()
     {
         Newsdata tmp = Newsdata.get(bundle.getString("ID"));
-        TextView title = (TextView)findViewById(R.id.ReaderTitle);
-        title.setText(tmp.getTitle());
-        TextView content = (TextView)findViewById(R.id.ReaderContent);
-        title.setText(tmp.getContent());
+        titleView.setText(tmp.getTitle());
+        contentView.setText(tmp.getContent());
         ArrayList<String> list = tmp.getPictures();
         for (String pic : list)
         {
             final ImageView imageView = new ImageView(this);
+            readerLayout.addView(imageView);
             imgURL = pic;
             new Thread(new Runnable() {
                 @Override
