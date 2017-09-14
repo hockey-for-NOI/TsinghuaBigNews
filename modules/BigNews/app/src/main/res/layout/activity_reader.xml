@@ -29,6 +29,13 @@
                 android:textSize="25dip"
             />
 
+            <Button
+                android:id="@+id/ReaderButton"
+                android:layout_width="20dip"
+                android:layout_height="20dip"
+                android:layout_marginTop="20px"
+                android:background="@android:drawable/ic_media_play"
+                />
             <TextView
                 android:id="@+id/ReaderContent"
                 android:layout_width="match_parent"
