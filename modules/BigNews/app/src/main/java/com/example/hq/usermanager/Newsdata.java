@@ -81,4 +81,8 @@ public class Newsdata extends SugarRecord {
         if (tmp.size() > 0) return tmp.get(0); else return new Newsdata("", "");
     }
 
+    public  Newsabs getAbs() {
+        List<Newsabs> tmp = Newsabs.find(Newsabs.class, "newsid = ?", getNewsID());
+        return tmp.get(0);
+    }
 }
