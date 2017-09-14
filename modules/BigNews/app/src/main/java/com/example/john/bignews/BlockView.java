@@ -44,13 +44,13 @@ public class BlockView extends AppCompatActivity {
             }
         });
 
-        ArrayList<String> allCategory = com.example.sth.net.Category.getAllNames(), favouriteCategory = User.getFavouriteCategories();
+        ArrayList<String> stopList = User.getStopList();
         checkBoxList = new ArrayList<CheckBox>();
-        for (String i : allCategory)
+        for (String i : stopList)
         {
             CheckBox cb = new CheckBox(this);
             cb.setText(i);
-            cb.setChecked(favouriteCategory.contains(i));
+            cb.setChecked(true);
             checkBoxList.add(cb);
             blockBox.addView(cb);
         }
@@ -64,6 +64,7 @@ public class BlockView extends AppCompatActivity {
                 {
                     if (i.isChecked()) list.add(i.getText().toString());
                 }
+                User.setStopList(list);
                 MainActivity.mainInstance.refresh();
                 finish();
             }

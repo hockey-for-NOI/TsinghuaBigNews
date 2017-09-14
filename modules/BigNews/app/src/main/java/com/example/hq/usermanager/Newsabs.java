@@ -127,6 +127,16 @@ public class Newsabs extends SugarRecord {
     public static   ArrayList<Newsabs> getCachedAbstractByAdvice() {
         HashMap<Long, Double> cnt = new HashMap<Long, Double>();
         List<PreferPhrase> pp = PreferPhrase.find(PreferPhrase.class, "user = ?", User.getUser().getId().toString());
+        Collections.sort(pp, new Comparator<PreferPhrase>() {
+            @Override
+            public int compare(PreferPhrase preferPhrase, PreferPhrase t1) {
+                return preferPhrase.d < t1.d ? 1 : -1;
+            }
+        });
+
+        int bound = 5;
+        if (bound < pp.size()) pp = pp.subList(0, bound);
+
         for (PreferPhrase p: pp)
         {
             List<Newsabs> lis = Newsabs.find(Newsabs.class, "jsonstr like ?", "%" + p.phrase.word + "%");

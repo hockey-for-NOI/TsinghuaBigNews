@@ -41,7 +41,6 @@ public class Reader extends AppCompatActivity {
     private boolean prepared;
     private FloatingActionButton fab;
     private Newsdata tmp;
-    private boolean favourited;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +53,7 @@ public class Reader extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.FavouriteNews);
         prepared = false;
         if (Newsdata.get(bundle.getString("ID")).isComplete()) prepare(); else{titleView.setText("Waiting"); fab.setEnabled(false);}
+
 
         mHandler = new Handler();
 
@@ -77,16 +77,15 @@ public class Reader extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (favourited)
-//                if (SavedNews.exist(User.getUser(), tmp))
+                if (SavedNews.exist(User.getUser(), tmp))
                 {
                     fab.setImageResource(android.R.drawable.star_big_off);
-                    favourited = false;
+                    SavedNews.unsave(User.getUser(), tmp);
                 }
                 else
                 {
                     fab.setImageResource(android.R.drawable.star_big_on);
-                    favourited = true;
+                    SavedNews.save(User.getUser(), tmp);
                 }
             }
         });
@@ -100,8 +99,8 @@ public class Reader extends AppCompatActivity {
         titleView.setText(tmp.getTitle());
         contentView.setText(tmp.getContent());
         fab.setEnabled(true);
-        if (SavedNews.exist(User.getUser(), tmp)) fab.setImageResource(android.R.drawable.star_big_off);
-        fab.setImageResource(android.R.drawable.star_big_on);
+        if (SavedNews.exist(User.getUser(), tmp)) fab.setImageResource(android.R.drawable.star_big_on);
+        else fab.setImageResource(android.R.drawable.star_big_off);
         ArrayList<String> list = tmp.getPictures();
         for (String pic: list)
         {

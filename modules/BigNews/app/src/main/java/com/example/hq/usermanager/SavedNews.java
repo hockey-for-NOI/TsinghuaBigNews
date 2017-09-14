@@ -2,6 +2,7 @@ package com.example.hq.usermanager;
 
 import com.orm.SugarRecord;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,10 +12,13 @@ import java.util.List;
 public class SavedNews extends SugarRecord {
     User    owner;
     Newsdata    data;
+    Newsabs abs;
     public SavedNews() {}
     public SavedNews(User owner, Newsdata data) {
         this.owner = owner;
         this.data = data;
+        List<Newsabs> tmp = Newsabs.find(Newsabs.class, "newsid = ?", data.getNewsID());
+        abs = tmp.get(0);
     }
 
     public   static void    save(User u, Newsdata data) {
@@ -42,6 +46,13 @@ public class SavedNews extends SugarRecord {
     public   static List<SavedNews>    getSavedNews(User u) {
         List<SavedNews> tmp = SavedNews.find(SavedNews.class, "owner = ?", u.getId().toString());
         return tmp;
+    }
+
+    public   static ArrayList<Newsabs>    getSavedNewsabs(User u) {
+        List<SavedNews> tmp = SavedNews.find(SavedNews.class, "owner = ?", u.getId().toString());
+        ArrayList<Newsabs> res = new ArrayList<Newsabs>();
+        for (SavedNews i: tmp) res.add(i.abs);
+        return res;
     }
 
     public Newsdata getData() {return data;}

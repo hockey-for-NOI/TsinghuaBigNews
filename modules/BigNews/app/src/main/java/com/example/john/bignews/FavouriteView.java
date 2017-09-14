@@ -10,6 +10,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.hq.usermanager.Newsabs;
+import com.example.hq.usermanager.SavedNews;
+import com.example.hq.usermanager.User;
 
 import org.w3c.dom.Text;
 
@@ -27,15 +29,16 @@ public class FavouriteView extends AppCompatActivity {
         intent = new Intent(this, Reader.class);
         listView = (ListView)findViewById(R.id.FavouriteList);
 
-        listItems = new ArrayList<Newsabs>(Newsabs.getCachedAbstractByCategory("科技"));
+        listItems = new ArrayList<Newsabs>(SavedNews.getSavedNewsabs(User.getUser()));
         listView.setAdapter(new ListAdapter(this, listItems));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Bundle bundle = new Bundle();
-                bundle.putString("ID", listItems.get(i - 1).getNewsID());
+                bundle.putString("ID", listItems.get(i).getNewsID());
                 intent.putExtras(bundle);
                 startActivity(intent);
+                finish();
             }
         });
     }
