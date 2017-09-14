@@ -1,6 +1,7 @@
 package com.example.john.bignews;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -12,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.hq.usermanager.Newsabs;
+import com.example.hq.usermanager.User;
+import com.example.hq.usermanager.ViewedNews;
 import com.example.sth.net.ImageLoader;
 
 import java.util.ArrayList;
@@ -51,13 +54,22 @@ class ListAdapter extends BaseAdapter
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = inflater.inflate(R.layout.content_abstract_info, null);
         LinearLayout textPack = (LinearLayout)view.findViewById(R.id.text_pack);
-        ImageView imageView = (ImageView)view.findViewById(R.id.imageview);
+         ImageView imageView = (ImageView)view.findViewById(R.id.imageview);
+        LinearLayout absteractLayout = (LinearLayout)view.findViewById(R.id.AbstractLayout);
+
+        if (ViewedNews.viewed(User.getUser(), listItem.get(position)))
+        {
+            absteractLayout.setBackgroundColor(Color.parseColor("#F0FFF0"));
+        }
+        else
+        {
+            absteractLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
 
         ViewGroup.LayoutParams para;
         para = textPack.getLayoutParams();
         para.width = MainActivity.static_width - MainActivity.static_width / 5 - 60;
         textPack.setLayoutParams(para);
-
         TextView textView = (TextView)textPack.findViewById(R.id.text_name);
         textView.setText(listItem.get(position).getTitle());
         TextView    absView = (TextView)textPack.findViewById(R.id.text_abs);
