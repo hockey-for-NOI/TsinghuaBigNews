@@ -132,9 +132,7 @@ public class PageFragment extends Fragment {
             Intent intent=new Intent(getActivity(), Reader.class);
             Bundle bundle = new Bundle();
             bundle.putString("ID", listItems.get(arg2-1).getNewsID());
-
             intent.putExtras(bundle);
-
             startActivity(intent);
         }
     }

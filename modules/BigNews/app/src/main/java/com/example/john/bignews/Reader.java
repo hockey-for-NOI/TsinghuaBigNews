@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.example.hq.usermanager.Newsdata;
 import com.example.hq.usermanager.SavedNews;
 import com.example.hq.usermanager.User;
+import com.example.hq.usermanager.ViewedNews;
 import com.example.sth.net.ImageLoader;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.common.reflect.Parameter;
@@ -96,6 +97,7 @@ public class Reader extends AppCompatActivity {
         if (prepared) return;
         prepared = true;
         tmp = Newsdata.get(bundle.getString("ID"));
+        ViewedNews.view(User.getUser(), tmp.getAbs());
         titleView.setText(tmp.getTitle());
         contentView.setText(tmp.getContent());
         fab.setEnabled(true);
