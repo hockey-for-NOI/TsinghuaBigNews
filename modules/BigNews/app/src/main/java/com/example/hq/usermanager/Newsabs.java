@@ -130,6 +130,7 @@ public class Newsabs extends SugarRecord {
         Collections.sort(pp, new Comparator<PreferPhrase>() {
             @Override
             public int compare(PreferPhrase preferPhrase, PreferPhrase t1) {
+                if (preferPhrase.d == t1.d) return 0;
                 return preferPhrase.d < t1.d ? 1 : -1;
             }
         });
@@ -156,6 +157,7 @@ public class Newsabs extends SugarRecord {
         Collections.sort(res_id, new Comparator<Long>() {
             @Override
             public int compare(Long aLong, Long t1) {
+                if (fcnt.get(aLong).equals(fcnt.get(t1))) return 0;
                 return fcnt.get(aLong) < fcnt.get(t1) ? 1 : -1;
             }
         });

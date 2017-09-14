@@ -54,16 +54,16 @@ class ListAdapter extends BaseAdapter
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = inflater.inflate(R.layout.content_abstract_info, null);
         LinearLayout textPack = (LinearLayout)view.findViewById(R.id.text_pack);
-         ImageView imageView = (ImageView)view.findViewById(R.id.imageview);
-        LinearLayout absteractLayout = (LinearLayout)view.findViewById(R.id.AbstractLayout);
+        ImageView imageView = (ImageView)view.findViewById(R.id.imageview);
+        LinearLayout abstractLayout = (LinearLayout)view.findViewById(R.id.AbstractLayout);
 
         if (ViewedNews.viewed(User.getUser(), listItem.get(position)))
         {
-            absteractLayout.setBackgroundColor(Color.parseColor("#F0FFF0"));
+            abstractLayout.setBackgroundColor(Color.parseColor("#F0FFF0"));
         }
         else
         {
-            absteractLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            abstractLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
         }
 
         ViewGroup.LayoutParams para;
