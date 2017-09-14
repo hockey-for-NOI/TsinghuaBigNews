@@ -27,4 +27,18 @@ public class Baike {
 		}
 		return output;
 	}
+	public static String validateBaike(String keyword) {
+		try {
+			URL url = new URL("https://baike.baidu.com/item/" + keyword);
+			BufferedReader in = new BufferedReader(new
+					InputStreamReader(url.openStream()));
+			String s = in.readLine();
+			s = in.readLine();
+			if (s.contains("OK"))
+				return ("https://baike.baidu.com/item/" + keyword);
+			else
+				return "";
+		}
+		catch (IOException e) {return null;}
+	}
 }

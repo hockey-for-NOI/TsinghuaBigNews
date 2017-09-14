@@ -67,7 +67,8 @@ public class PageFragment extends Fragment {
                     new Thread() {
                         @Override
                         public void run() {
-                            Newsabs.grab(new NewsParam().setCategory(Category.getNum(pageCategory))
+                            if (pageCategory.compareTo("推荐") != 0)
+                                Newsabs.grab(new NewsParam().setCategory(Category.getNum(pageCategory))
                                     .setPageNo(((listItems == null ? 0 : listItems.size()) + 519) / 500).setPageSize(500));
                             mHandler.post(new Runnable() {
                                 @Override
@@ -94,7 +95,8 @@ public class PageFragment extends Fragment {
                     new Thread() {
                         @Override
                         public void run() {
-                            Newsabs.grab(new NewsParam().setCategory(Category.getNum(pageCategory))
+                            if (pageCategory.compareTo("推荐") != 0)
+                                Newsabs.grab(new NewsParam().setCategory(Category.getNum(pageCategory))
                                     .setPageNo(1).setPageSize(500));
                             mHandler.post(new Runnable() {
                                 @Override

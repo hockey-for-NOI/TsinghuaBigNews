@@ -38,7 +38,6 @@ public class Reader extends AppCompatActivity {
     private Handler mHandler;
     private LinearLayout readerLayout;
     private TextView titleView, contentView;
-    private String imgURL;
     private boolean prepared;
     private FloatingActionButton fab;
     private Newsdata tmp;
@@ -112,13 +111,14 @@ public class Reader extends AppCompatActivity {
             imageView.setMaxWidth(MainActivity.static_width);
             imageView.setMaxHeight(MainActivity.static_height);
             readerLayout.addView(view);
-            imgURL = pic;
 
             new Thread() {
                 ImageView t;
+                String imgURL;
 
-                public Thread set(ImageView t) {
+                public Thread set(ImageView t, String imgURL) {
                     this.t = t;
+                    this.imgURL = imgURL;
                     return this;
                 }
 
@@ -132,7 +132,7 @@ public class Reader extends AppCompatActivity {
                         }
                     });
                 }
-            }.set(imageView).start();
+            }.set(imageView, pic).start();
         }
     }
 }

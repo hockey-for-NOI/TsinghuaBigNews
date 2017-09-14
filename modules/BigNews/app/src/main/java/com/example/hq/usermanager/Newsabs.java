@@ -12,7 +12,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ThinkPad on 2017/9/5.
@@ -82,8 +84,15 @@ public class Newsabs extends SugarRecord {
     }
 
     public static   ArrayList<Newsabs> getCachedAbstractByCategory(String category) {
+        if (0 == category.compareTo("推荐")) return getCachedAbstractByAdvice();
         List<Newsabs> lis = Newsabs.find(Newsabs.class, "category = ?", category);
-        ArrayList<Newsabs> alis = new ArrayList<Newsabs>(lis);
+        ArrayList<Newsabs> alis = new ArrayList<Newsabs>();
+        for (Newsabs i: lis) {
+            boolean flag = true;
+            for (String t: User.getStopList())
+                if (i.jsonstr.contains(t)) flag = false;
+            if (flag) alis.add(i);
+        }
         Collections.sort(alis, new Comparator<Newsabs>() {
             @Override
             public int compare(Newsabs newsabs, Newsabs t1) {
@@ -93,6 +102,56 @@ public class Newsabs extends SugarRecord {
             }
         });
         return alis;
+    }
+
+    public static   ArrayList<Newsabs> searchAbstractOffline(String keyword) {
+        List<Newsabs> lis = Newsabs.find(Newsabs.class, "jsonstr like ?", "%" + keyword + "%");
+        ArrayList<Newsabs> alis = new ArrayList<Newsabs>();
+        for (Newsabs i: lis) {
+            boolean flag = true;
+            for (String t: User.getStopList())
+                if (i.jsonstr.contains(t)) flag = false;
+            if (flag) alis.add(i);
+        }
+        Collections.sort(alis, new Comparator<Newsabs>() {
+            @Override
+            public int compare(Newsabs newsabs, Newsabs t1) {
+                if (newsabs.time > t1.time) return -1;
+                if (newsabs.time  == t1.time) return 0;
+                return 1;
+            }
+        });
+        return alis;
+    }
+
+    public static   ArrayList<Newsabs> getCachedAbstractByAdvice() {
+        HashMap<Long, Double> cnt = new HashMap<Long, Double>();
+        List<PreferPhrase> pp = PreferPhrase.find(PreferPhrase.class, "user = ?", User.getUser().getId().toString());
+        for (PreferPhrase p: pp)
+        {
+            List<Newsabs> lis = Newsabs.find(Newsabs.class, "jsonstr like ?", "%" + p.phrase.word + "%");
+            for (Newsabs i: lis) {
+                boolean flag = true;
+                for (String t: User.getStopList())
+                    if (i.jsonstr.contains(t)) flag = false;
+                if (!flag) continue;
+                if (ViewedNews.find(ViewedNews.class, "owner = ? and data = ?", User.getUser().getId().toString(), i.getId().toString()).size() > 0) continue;
+                if (cnt.containsKey(i.getId())) cnt.put(i.getId(), cnt.get(i.getId()) + p.d);
+                else cnt.put(i.getId(), p.d);
+            }
+        }
+        final HashMap<Long, Double> fcnt = cnt;
+        ArrayList<Long> res_id = new ArrayList<Long>();
+        res_id.addAll(cnt.keySet());
+        Collections.sort(res_id, new Comparator<Long>() {
+            @Override
+            public int compare(Long aLong, Long t1) {
+                return fcnt.get(aLong) < fcnt.get(t1) ? 1 : -1;
+            }
+        });
+        ArrayList<Newsabs> res = new ArrayList<Newsabs>();
+        for (int i=0; i < res_id.size(); i++) res.add(Newsabs.findById(Newsabs.class, res_id.get(i)));
+        return res;
     }
 
     public String getTitle() {return title;}
