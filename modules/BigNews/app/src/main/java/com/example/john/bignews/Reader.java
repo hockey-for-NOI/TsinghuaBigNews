@@ -23,6 +23,7 @@ import com.example.hq.usermanager.SavedNews;
 import com.example.hq.usermanager.User;
 import com.example.hq.usermanager.ViewedNews;
 import com.example.sth.net.ImageLoader;
+import com.example.sth.net.Speech;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.common.reflect.Parameter;
 
@@ -45,10 +46,12 @@ public class Reader extends AppCompatActivity {
     private boolean prepared;
     private FloatingActionButton fab;
     private Newsdata tmp;
+    private boolean reading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        reading = false;
         setContentView(R.layout.activity_reader);
         bundle = this.getIntent().getExtras();
         readerLayout = (LinearLayout) findViewById(R.id.ReaderLayout);
@@ -111,7 +114,14 @@ public class Reader extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (!reading) {
+                    Speech.start(tmp.getContent());
+                    reading = true;
+                }
+                else {
+                    Speech.stop();
+                    reading = false;
+                }
             }
         });
 
