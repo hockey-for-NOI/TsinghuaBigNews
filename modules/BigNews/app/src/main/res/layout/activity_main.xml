@@ -18,8 +18,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp">
+        >
         <android.support.design.widget.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="fill_parent"
@@ -102,6 +101,24 @@
             app:fab_colorPressed="@color/colorPrimaryDark"
             app:fab_size="mini"
             app:fab_label="Favourite"
+            />
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/UserPageSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/colorPrimary"
+            app:fab_colorPressed="@color/colorPrimaryDark"
+            app:fab_size="mini"
+            app:fab_label="Search"
+            />
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/UserPageBlock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/colorPrimary"
+            app:fab_colorPressed="@color/colorPrimaryDark"
+            app:fab_size="mini"
+            app:fab_label="Block"
             />
     </com.github.clans.fab.FloatingActionMenu>
 

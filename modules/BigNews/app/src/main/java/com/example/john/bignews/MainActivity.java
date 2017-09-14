@@ -20,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Thread[] news_grabber;
     public static MainActivity mainInstance;
-    private FloatingActionButton fabInfo, fabLogin, fabLogout, fabRegister, fabCategory, fabFavourite;
-    private Intent intentLogin, intentRegister, intentCategory;
+    private FloatingActionButton fabInfo, fabLogin, fabLogout, fabRegister, fabCategory, fabFavourite, fabSearch, fabBlock;
+    private Intent intentLogin, intentRegister, intentCategory, intentFavourite, intentSearch, intentBlock;
     private MyFragmentPagerAdapter adapter;
     public static int static_width, static_height;
     @Override
@@ -56,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
         intentLogin = new Intent(this, Login.class);
         intentRegister = new Intent(this, Register.class);
         intentCategory = new Intent(this, CategoryView.class);
+        intentFavourite = new Intent(this, FavouriteView.class);
+        intentSearch = new Intent(this, SearchView.class);
+        intentBlock = new Intent(this, BlockView.class);
 
         fabInfo = (FloatingActionButton) findViewById(R.id.UserPageInfo);
         fabInfo.setLabelText(User.getUser().getName());
@@ -91,6 +94,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(intentCategory);
+            }
+        });
+        fabFavourite = (FloatingActionButton) findViewById(R.id.UserPageFavourite);
+        fabFavourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(intentFavourite);
+            }
+        });
+        fabSearch = (FloatingActionButton) findViewById(R.id.UserPageSearch);
+        fabSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(intentSearch);
+            }
+        });
+        fabBlock = (FloatingActionButton)findViewById(R.id.UserPageBlock);
+        fabBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(intentBlock);
             }
         });
     }
