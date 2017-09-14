@@ -1,6 +1,7 @@
 package com.example.john.bignews;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,6 +41,7 @@ public class Reader extends AppCompatActivity {
     private Handler mHandler;
     private LinearLayout readerLayout;
     private TextView titleView, contentView;
+    private Button button;
     private boolean prepared;
     private FloatingActionButton fab;
     private Newsdata tmp;
@@ -52,6 +55,9 @@ public class Reader extends AppCompatActivity {
         titleView = (TextView) findViewById(R.id.ReaderTitle);
         contentView = (TextView) findViewById(R.id.ReaderContent);
         fab = (FloatingActionButton) findViewById(R.id.FavouriteNews);
+        button = (Button) findViewById(R.id.ReaderButton);
+        button.setBackgroundColor(Color.parseColor("#F0FFF0"));
+        button.setBackgroundResource(android.R.drawable.ic_media_play);
         prepared = false;
         if (Newsdata.get(bundle.getString("ID")).isComplete()) prepare(); else{titleView.setText("Waiting"); fab.setEnabled(false);}
 
@@ -101,6 +107,14 @@ public class Reader extends AppCompatActivity {
         titleView.setText(tmp.getTitle());
         contentView.setText(tmp.getContent());
         fab.setEnabled(true);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         if (SavedNews.exist(User.getUser(), tmp)) fab.setImageResource(android.R.drawable.star_big_on);
         else fab.setImageResource(android.R.drawable.star_big_off);
         ArrayList<String> list = tmp.getPictures();
